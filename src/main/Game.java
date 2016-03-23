@@ -1,7 +1,12 @@
+package main;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+
+import acteurs.*;
+
 
 public class Game extends Canvas implements Runnable{
 
@@ -12,13 +17,25 @@ public class Game extends Canvas implements Runnable{
 	
 	public static final int WIDTH = 640;
 	public static final int HEIGHT = WIDTH/12*9;
+	
+	private Population population;
 
 	
 	
 	public Game(){
+		
+		population = new Population();
+		this.addKeyListener(new KeyInput(population));
+		
 		new Window(WIDTH, HEIGHT, "Rogue Heritage", this);
+		
+		//Construction d'une population:		
+		population.addPersonnage(new Joueur(100,100, 20));
+		population.addPersonnage(new Monstre(200,200, 0));
+		population.addPersonnage(new Allié(300,300, 0));
 	}
 
+	
 	public synchronized void start(){
 		thread = new Thread(this);
 		thread.start();
@@ -79,6 +96,7 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick(){
+		population.tick();
 		
 	}
 	
@@ -91,8 +109,10 @@ public class Game extends Canvas implements Runnable{
 		
 		Graphics g = bs.getDrawGraphics();
 		
-		g.setColor(Color.BLUE);
-		g.fillRect(0, 0, WIDTH/2, HEIGHT);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		population.render(g);
 		
 		g.dispose();
 		bs.show();
