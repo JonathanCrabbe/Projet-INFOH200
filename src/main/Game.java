@@ -30,7 +30,7 @@ public class Game extends Canvas implements Runnable{
 		new Window(WIDTH, HEIGHT, "Rogue Heritage", this);
 		
 		//Construction d'une population:		
-		population.addPersonnage(new Joueur(100,100, 20));
+		population.addPersonnage(new Joueur(100,100, 10));
 		population.addPersonnage(new Monstre(200,200, 0));
 		population.addPersonnage(new Allié(300,300, 0));
 	}

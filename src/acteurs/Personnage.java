@@ -6,7 +6,9 @@ public abstract class Personnage {
 	
 	protected int x;
 	protected int y;
-	protected int vitesse;
+	private int vitesse;
+	protected int vx;
+	protected int vy;
 	boolean estJoueur;
 	
 	public Personnage(int x, int y, int vitesse, boolean estJoueur){
@@ -42,20 +44,28 @@ public abstract class Personnage {
 	//Mouvement:
 	
 	public void moveUp(){
-		this.y -= vitesse;
+		this.vy = -vitesse;
+		this.vx = 0;
 	}
 	
 	public void moveDown(){
-		this.y += vitesse;
+		this.vy = vitesse;
+		this.vx = 0;
 	}
 	
 	public void moveRight(){
-		this.x += vitesse;
+		this.vx = vitesse;
+		this.vy = 0;
 	}
 	
 	public void moveLeft(){
-		this.x -= vitesse;
+		this.vx = -vitesse;
+		this.vy = 0;
 	}
 	
+	public void immobilize(){
+		this.vx = 0;
+		this.vy = 0;
+	}
 
 }

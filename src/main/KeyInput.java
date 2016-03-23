@@ -49,7 +49,21 @@ public class KeyInput extends KeyAdapter {
 	public void keyReleased(KeyEvent e){
 		int key = e.getKeyCode();
 		
-		
+		for(int i = 0 ; i < population.getSize() ; i++ ){
+			Personnage persoTemp = population.getPerso(i);
+			
+			if(persoTemp.getEstJoueur()){
+				
+				// Évènements déclanchés pour le joueur:
+				
+				if(key == KeyEvent.VK_Z || key == KeyEvent.VK_Q || key == KeyEvent.VK_S || key == KeyEvent.VK_D){
+					persoTemp.immobilize();
+				}
+				
+				
+			}
+			
+		}
 		
 	}
 

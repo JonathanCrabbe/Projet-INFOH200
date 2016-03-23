@@ -11,7 +11,8 @@ public class Joueur extends Personnage {
 	}
 
 	public void tick() {
-	
+		x += vx;
+		y += vy;
 		
 	}
 
