@@ -2,8 +2,11 @@ package main;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Point;
 
 import javax.swing.JFrame;
+
+import acteurs.Personnage;
 
 
 
@@ -27,8 +30,9 @@ public class Window extends Canvas {
 		
 		// Disposition de la fenêtre: 
 		
-		frame.setLocationRelativeTo(null);
+		
 		frame.add(game);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		game.start();
 	}

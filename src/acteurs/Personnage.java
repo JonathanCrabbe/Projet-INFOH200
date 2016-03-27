@@ -1,12 +1,15 @@
 package acteurs;
 
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 public abstract class Personnage {
 	
 	protected int x;
 	protected int y;
 	private int vitesse;
+	protected BufferedImage image;
 	protected int vx;
 	protected int vy;
 	boolean estJoueur;
@@ -18,7 +21,12 @@ public abstract class Personnage {
 		this.estJoueur = estJoueur;
 	}
 	public abstract void tick();
-	public abstract void render(Graphics g);
+	
+	
+	
+	public void render(Graphics g){
+		g.drawImage(image,x, y, 20,20, null);
+	}
 	
 	//Setters:
 	
@@ -66,6 +74,9 @@ public abstract class Personnage {
 	public void immobilize(){
 		this.vx = 0;
 		this.vy = 0;
+	}
+	public BufferedImage getImage(){
+		return this.image;
 	}
 
 }

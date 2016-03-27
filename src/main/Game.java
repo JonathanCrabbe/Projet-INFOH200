@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import acteurs.*;
+import plateau.Plateau;
 
 
 public class Game extends Canvas implements Runnable{
@@ -15,24 +16,28 @@ public class Game extends Canvas implements Runnable{
 	private Thread thread;
 	private boolean running = false;
 	
-	public static final int WIDTH = 640;
+	public static final int WIDTH = 1000;
 	public static final int HEIGHT = WIDTH/12*9;
 	
 	private Population population;
+	private Plateau plateau;
 
 	
 	
 	public Game(){
 		
 		population = new Population();
+		plateau = new Plateau(40);
 		this.addKeyListener(new KeyInput(population));
 		
 		new Window(WIDTH, HEIGHT, "Rogue Heritage", this);
 		
 		//Construction d'une population:		
-		population.addPersonnage(new Joueur(100,100, 10));
+		population.addPersonnage(new Joueur(100,100, 20));
 		population.addPersonnage(new Monstre(200,200, 0));
 		population.addPersonnage(new Allié(300,300, 0));
+		
+		//Construction de la map:
 	}
 
 	
@@ -60,16 +65,17 @@ public class Game extends Canvas implements Runnable{
 		/* 
 			
 			Game loop pour réguler l'exécution des tâches.
-			Récupérée sur: https://www.youtube.com/watch?v=1gir2R7G9ws 
+			Inspirée de: http://www.java-gaming.org/index.php?topic=24220.0
 		
 		
 		*/
 		
 		long lastTime = System.nanoTime();
-		double amountOfTicks = 60.0;
+		double amountOfTicks = 5.0;
 		double ns = 1000000000/ amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
+		int updates = 0;
 		int frames = 0;
 		while(running){
 			long now = System.nanoTime();
@@ -78,17 +84,20 @@ public class Game extends Canvas implements Runnable{
 			
 			while(delta >= 1){
 				tick();
+				updates++;
 				delta--;
 			}
 			if(running){
 				render();
+				frames++;
 			}
-			frames++;
+			
 			
 			if(System.currentTimeMillis()- timer > 1000){
 				timer += 1000;
-				System.out.println("FPS: " + frames);
+				System.out.println("FPS: " + frames + " TICKS: " + updates);
 				frames = 0;
+				updates = 0;
 			}
 		}
 		stop();
@@ -97,6 +106,7 @@ public class Game extends Canvas implements Runnable{
 	
 	private void tick(){
 		population.tick();
+		plateau.tick();
 		
 	}
 	
@@ -109,15 +119,21 @@ public class Game extends Canvas implements Runnable{
 		
 		Graphics g = bs.getDrawGraphics();
 		
-		g.setColor(Color.BLACK);
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
+		
+		plateau.render(g);
 		population.render(g);
 		
 		g.dispose();
 		bs.show();
 	}
 	
+	
+	public Population getPopulation(){
+		return this.population;
+	}
 	
 	public static void main(String args[]){
 			new Game();

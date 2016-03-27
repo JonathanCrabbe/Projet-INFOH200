@@ -12,7 +12,8 @@ public class Monstre extends PNJ {
 
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
+		
+		this.x += 20;
 
 	}
 
