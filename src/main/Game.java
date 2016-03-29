@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import acteurs.*;
+import plateau.Case;
 import plateau.Plateau;
 
 
@@ -16,28 +17,26 @@ public class Game extends Canvas implements Runnable{
 	private Thread thread;
 	private boolean running = false;
 	
-	public static final int WIDTH = 1000;
-	public static final int HEIGHT = WIDTH/12*9;
+	public static final int WIDTH = Case.dim * (2*Joueur.FOV+1);
+	public static final int HEIGHT = Case.dim * (2*Joueur.FOV+1);
 	
 	private Population population;
 	private Plateau plateau;
+	
+	private final int taillePlateau = 100;
+	private final int nombreMonstres = 20;
 
 	
 	
 	public Game(){
 		
-		population = new Population();
-		plateau = new Plateau(40);
+		plateau = new Plateau(taillePlateau, this);
+		population = new Population(nombreMonstres,this);
+		
 		this.addKeyListener(new KeyInput(population));
 		
-		new Window(WIDTH, HEIGHT, "Rogue Heritage", this);
+		new Window(WIDTH, HEIGHT, "Rogue Heritage", this);	
 		
-		//Construction d'une population:		
-		population.addPersonnage(new Joueur(100,100, 20));
-		population.addPersonnage(new Monstre(200,200, 0));
-		population.addPersonnage(new Allié(300,300, 0));
-		
-		//Construction de la map:
 	}
 
 	
@@ -71,7 +70,7 @@ public class Game extends Canvas implements Runnable{
 		*/
 		
 		long lastTime = System.nanoTime();
-		double amountOfTicks = 5.0;
+		double amountOfTicks = 10.0;
 		double ns = 1000000000/ amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
@@ -119,24 +118,26 @@ public class Game extends Canvas implements Runnable{
 		
 		Graphics g = bs.getDrawGraphics();
 		
-		g.setColor(Color.WHITE);
+		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		
-		plateau.render(g);
+		Personnage player = population.getPerso(0);
+		plateau.renderLocal(g, player.getX(), player.getY());
 		population.render(g);
 		
 		g.dispose();
 		bs.show();
 	}
 	
+	//Getters
 	
 	public Population getPopulation(){
 		return this.population;
+	}	
+	
+	public Plateau getPlateau(){
+		return this.plateau;
 	}
 	
-	public static void main(String args[]){
-			new Game();
-		
-	}
+	
 }

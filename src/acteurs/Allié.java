@@ -3,10 +3,12 @@ package acteurs;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import main.Game;
+
 public class Allié extends PNJ {
 
-	public Allié(int x, int y, int vitesse) {
-		super(x, y, vitesse);
+	public Allié(int x, int y, int vitesse, Game game) {
+		super(x, y, vitesse, game);
 		// TODO Auto-generated constructor stub
 	}
 

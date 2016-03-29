@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 public class Dalle extends Case {
 
 	public Dalle(int x, int y) {
-		super(x, y, 1);
+		super(x, y, 0);
 		try {
 			this.image = ImageIO.read(new File("Images/dalle.png"));
 		} catch (IOException e) {

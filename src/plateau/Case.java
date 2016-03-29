@@ -10,7 +10,7 @@ public abstract class Case {
 	protected int x;
 	protected int y;
 	protected int caseType;
-	public static int dim = 20;
+	public static int dim = 50;
 
 	public Case(int x, int y, int caseType){
 		this.x = x;
@@ -18,7 +18,28 @@ public abstract class Case {
 		this.caseType = caseType;
 	}
 	
+	
 	public abstract  void tick();
+	
+	public void render(Graphics g){
+		g.drawImage(image, x*dim, y*dim, dim, dim, null);
+	}
+	
+	
+	//Getters:
+	
+	public int getCaseType(){
+		return this.caseType;
+	}
+	public int getX(){
+		return this.x;
+	}
+	
+	public int getY(){
+		return this.y;
+	}
+	
+	
 	
 	
 

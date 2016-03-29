@@ -4,8 +4,12 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+import main.Game;
+import plateau.Case;
+
 public abstract class Personnage {
 	
+	private Game game;
 	protected int x;
 	protected int y;
 	private int vitesse;
@@ -14,19 +18,19 @@ public abstract class Personnage {
 	protected int vy;
 	boolean estJoueur;
 	
-	public Personnage(int x, int y, int vitesse, boolean estJoueur){
+	public Personnage(int x, int y, int vitesse, boolean estJoueur, Game game){
 		this.x = x;
 		this.y = y;
 		this.vitesse = vitesse;
 		this.estJoueur = estJoueur;
 	}
+	
 	public abstract void tick();
 	
 	
 	
-	public void render(Graphics g){
-		g.drawImage(image,x, y, 20,20, null);
-	}
+	public abstract void render(Graphics g);
+		
 	
 	//Setters:
 	
@@ -48,6 +52,13 @@ public abstract class Personnage {
 	public boolean getEstJoueur(){
 		return estJoueur;
 	}
+	
+	//Renvoie la case sur laquelle se trouve le personnage:
+	public Case getCase(){
+		
+		return this.game.getPlateau().getCase(x, y);
+	}
+	
 	
 	//Mouvement:
 	

@@ -9,12 +9,20 @@ import java.io.IOException;
 
 import javax.imageio.*;
 
+import main.Game;
+import plateau.Case;
+
 
 public class Joueur extends Personnage {
 	
+	public static int FOV = 7;
+	private Game game;
+	
 
-	public Joueur(int x, int y, int vitesse) {
-		super(x, y, vitesse, true);
+	public Joueur(int x, int y, int vitesse, Game game) {
+		super(x, y, vitesse, true, game);
+		this.game = game;
+		
 		try {
 			this.image = ImageIO.read(new File("Images/Joueur.png"));
 		} catch (IOException e) {
@@ -22,16 +30,31 @@ public class Joueur extends Personnage {
 		}
 		
 	}
+	
 
 	public void tick() {
-		x += vx;
-		y += vy;
 		
+		//Case sur laquelle le joueur veut se déplacer:
+		Case caseVoulue = this.game.getPlateau().getCase(x+vx, y+vy); 
+		boolean caseLibre = this.game.getPopulation().caseIsFree(x+vx, y+vy);
+		
+		if(caseVoulue.getCaseType() != 1 && caseLibre){
+			x += vx;
+			y += vy;
+		}
 	}
 	
 	public void render(Graphics g){
-		g.drawImage(image,x, y, 20,20, null);
+		int dim = Case.dim;
+		int FOV = Joueur.FOV;
+		int xp = (FOV)*dim ;
+		int yp = (FOV)*dim;	
+		
+		g.drawImage(image,xp, yp, dim,dim, null);
+		
 	}
+
+	
 
 	
 
