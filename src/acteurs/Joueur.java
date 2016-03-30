@@ -28,6 +28,7 @@ public class Joueur extends Personnage {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		
 	}
 	
