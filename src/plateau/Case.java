@@ -4,12 +4,19 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-public abstract class Case {
+import acteurs.Personnage;
+import main.VisualGameObject;
+
+public abstract class Case implements VisualGameObject{
 	
 	protected BufferedImage image;
 	protected int x;
 	protected int y;
 	protected int caseType;
+
+
+	
+	
 	public static int dim = 50;
 
 	public Case(int x, int y, int caseType){
@@ -26,7 +33,9 @@ public abstract class Case {
 	}
 	
 	
-	//Getters:
+	/*
+	 * Getters:
+	 */
 	
 	public int getCaseType(){
 		return this.caseType;
@@ -39,7 +48,9 @@ public abstract class Case {
 		return this.y;
 	}
 	
-	
+	/*
+	 * Setters:
+	 */
 	
 	
 

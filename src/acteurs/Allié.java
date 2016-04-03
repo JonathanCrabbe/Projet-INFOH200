@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import main.Game;
+import main.VisualGameObject;
 
-public class Allié extends PNJ {
+
+public class Allié extends PNJ implements VisualGameObject{
 
 	public Allié(int x, int y, int vitesse, Game game) {
-		super(x, y, vitesse, game);
+		super(x, y, game);
 		// TODO Auto-generated constructor stub
 	}
 

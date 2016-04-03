@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import acteurs.*;
+import fenetreOptions.FenetreOption;
+import fenetreOptions.OptionsDemarrage;
 import plateau.Case;
 import plateau.Plateau;
 
@@ -30,12 +32,16 @@ public class Game extends Canvas implements Runnable{
 	
 	public Game(){
 		
+		//new FenetreOption();
+		
+		
+		
 		plateau = new Plateau(taillePlateau, this);
 		population = new Population(nombreMonstres,this);
 		
 		this.addKeyListener(new KeyInput(population));
 		
-		new Window(WIDTH, HEIGHT, "Rogue Heritage", this);	
+		new FenetrePrincipale(WIDTH, HEIGHT, "Rogue Heritage", this);	
 		
 	}
 
@@ -70,7 +76,7 @@ public class Game extends Canvas implements Runnable{
 		*/
 		
 		long lastTime = System.nanoTime();
-		double amountOfTicks = 10.0;
+		double amountOfTicks = 5.0;
 		double ns = 1000000000/ amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
@@ -103,10 +109,10 @@ public class Game extends Canvas implements Runnable{
 		
 	}
 	
-	private void tick(){
+	private synchronized void tick(){
+		//Actualisation population et plateau:
 		population.tick();
-		plateau.tick();
-		
+		plateau.tick();	
 	}
 	
 	private void render(){
@@ -124,6 +130,7 @@ public class Game extends Canvas implements Runnable{
 		Personnage player = population.getPerso(0);
 		plateau.renderLocal(g, player.getX(), player.getY());
 		population.render(g);
+		
 		
 		g.dispose();
 		bs.show();

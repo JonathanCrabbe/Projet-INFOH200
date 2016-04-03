@@ -10,18 +10,21 @@ import java.io.IOException;
 import javax.imageio.*;
 
 import main.Game;
+import main.VisualGameObject;
+
 import plateau.Case;
 
 
-public class Joueur extends Personnage {
+public class Joueur extends Personnage implements VisualGameObject {
 	
 	public static int FOV = 7;
-	private Game game;
+
 	
 
 	public Joueur(int x, int y, int vitesse, Game game) {
-		super(x, y, vitesse, true, game);
-		this.game = game;
+		super(x, y, game);
+		this.estJoueur = true;
+
 		
 		try {
 			this.image = ImageIO.read(new File("Images/Joueur.png"));
@@ -34,14 +37,22 @@ public class Joueur extends Personnage {
 	
 
 	public void tick() {
-		
+			
 		//Case sur laquelle le joueur veut se déplacer:
 		Case caseVoulue = this.game.getPlateau().getCase(x+vx, y+vy); 
 		boolean caseLibre = this.game.getPopulation().caseIsFree(x+vx, y+vy);
 		
+		
 		if(caseVoulue.getCaseType() != 1 && caseLibre){
 			x += vx;
 			y += vy;
+		}
+	}
+	
+	public void getDammage(int d){
+		this.HP -= d;
+		if(HP <= 0){
+			this.game.stop();
 		}
 	}
 	
@@ -54,6 +65,9 @@ public class Joueur extends Personnage {
 		g.drawImage(image,xp, yp, dim,dim, null);
 		
 	}
+
+
+	
 
 	
 

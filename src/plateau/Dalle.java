@@ -5,7 +5,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Dalle extends Case {
+import main.VisualGameObject;
+
+public class Dalle extends Case implements VisualGameObject {
 
 	public Dalle(int x, int y) {
 		super(x, y, 0);

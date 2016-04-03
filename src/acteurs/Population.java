@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import main.Game;
+import main.VisualGameObject;
 import plateau.Case;
 import plateau.Dalle;
 
-public class Population {
+public class Population implements VisualGameObject{
 	
 	private ArrayList<Personnage> personnages = new ArrayList<Personnage>();
 	private Game game;
@@ -36,7 +37,7 @@ public class Population {
 				Case spawnTemp = freeDalles.get(rd.nextInt(freeDalles.size())); //Case sur laquelle le monstre apparaîtra
 				int spawnXTemp = spawnTemp.getX();
 				int spawnYTemp = spawnTemp.getY();
-				Monstre monstreTemp = new Monstre(spawnXTemp, spawnYTemp, Case.dim, game);
+				Monstre monstreTemp = new Monstre(spawnXTemp, spawnYTemp, game);
 				personnages.add(monstreTemp);
 				freeDalles.remove(spawnTemp); //La case est miantenant occupée
 				}
@@ -54,6 +55,13 @@ public class Population {
 			persoTemp.tick();
 			
 		}
+		for(int i = 0; i < personnages.size(); i++){
+			Personnage persoTemp = personnages.get(i);
+			if(persoTemp.getHP() == 0) {
+				personnages.remove(persoTemp);
+			}
+			
+		}
 		
 	}
 	
@@ -67,10 +75,11 @@ public class Population {
 		
 	}
 	
-	public void addPersonnage(Personnage perso){
+	private void addPersonnage(Personnage perso){
 		this.personnages.add(perso);
 	}
-	public void removePersonnage(Personnage perso){
+	
+	private void removePersonnage(Personnage perso){
 		this.personnages.remove(perso);
 	}
 	
@@ -78,7 +87,7 @@ public class Population {
 	//Renvoie True si la case en (x,y) n'est occupée par aucun personnage
 	public boolean caseIsFree(int x, int y){
 		boolean ans = true;
-		for(Personnage persoTemp:personnages){
+		for(Personnage persoTemp:this.personnages){
 			if(persoTemp.getX() == x && persoTemp.getY() == y){
 				ans = false;
 			}
@@ -95,6 +104,26 @@ public class Population {
 	
 	public Personnage getPerso(int i){
 		return personnages.get(i);
+	}
+	
+	//Renvoie le personnage ayant les coordonnées (x,y)
+	public Personnage getPerso(int x, int y){
+		Personnage perso = null;
+		for(Personnage persoTemp:personnages){
+			if(persoTemp.getX() == x && persoTemp.getY() == y){
+				perso = persoTemp;
+			}
+		}
+		return perso;	
+	}
+	
+	//Renvoie true si le joueur est en vie
+	public boolean playerIsAlive(){
+		boolean ans = false;
+		for(Personnage persoTemp:personnages){
+			if(persoTemp.getEstJoueur()) ans = true;
+		}
+		return ans;
 	}
 
 }

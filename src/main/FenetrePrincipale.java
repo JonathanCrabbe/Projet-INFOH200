@@ -6,15 +6,17 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
+import GUI.GUI;
 import acteurs.Personnage;
 
 
 
-public class Window extends Canvas {
+public class FenetrePrincipale extends Canvas {
 
 	private static final long serialVersionUID = -8255319694373975038L;
 	
-	public Window(int width, int height, String title, Game game){
+	public FenetrePrincipale(int width, int height, String title, Game game){
+		
 		JFrame frame = new JFrame(title);
 		
 		// Taille de la fenêtre:
@@ -28,9 +30,13 @@ public class Window extends Canvas {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		
-		// Disposition de la fenêtre: 
+		// Création du GUI:
+		
+		GUI topBar = new GUI(game);
 		
 		
+		
+		frame.add(topBar);
 		frame.add(game);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);

@@ -10,22 +10,24 @@ import acteurs.Joueur;
 import acteurs.Personnage;
 import generateurDonjon.Topologie;
 import main.Game;
+import main.VisualGameObject;
 
-public class Plateau extends JPanel{
+public class Plateau extends JPanel implements VisualGameObject{
 	
-	private int size;
+	private int taille;
 	private ArrayList<ArrayList<Case>> grille = new ArrayList<ArrayList<Case>>();
 	private Game game;
 	
-	public Plateau(int size, Game game){
-		this.size = size;
+	public Plateau(int taille, Game game){
+		this.taille = taille;
 		this.setFocusable(true);
 		this.requestFocusInWindow();
-		Topologie topologie = new Topologie(size);
-		for(int i = 0; i < size ; i++){
+		Topologie topologie = new Topologie(taille);
+		for(int i = 0; i < taille ; i++){
 			grille.add(new ArrayList<Case>());
-			for(int j = 0; j < size; j++){
-				if(topologie.estSalle(i, j)){			
+			for(int j = 0; j < taille; j++){
+				if(topologie.estSalle(i, j) && i != 0 && j != 0 && i != taille-1 && j != taille-1){
+					//On ne place des dalles selon la topologie générée et pas sur les bords du donjon
 					addCase(new Dalle(i,j), i, j);
 				}
 				else{
@@ -35,10 +37,14 @@ public class Plateau extends JPanel{
 		}		
 	}
 	
+	/*
+	 * Actualisation:
+	 */
+	
 	//Ce qu'il se passe à chaque ittération de la Game Loop
 	public void tick(){
-		for(int i = 0; i < size ; i++){
-			for(int j = 0; j < size; j++){
+		for(int i = 0; i < taille ; i++){
+			for(int j = 0; j < taille; j++){
 				Case caseTemp = grille.get(i).get(j);
 				caseTemp.tick();
 				//On actualise chaque case
@@ -51,8 +57,8 @@ public class Plateau extends JPanel{
 	public void renderGlobal(Graphics g) { 
 		if(grille == null){
 		}else{
-			for(int i = 0; i < size; i++){
-				for(int j = 0; j < size; j++){
+			for(int i = 0; i < taille; i++){
+				for(int j = 0; j < taille; j++){
 					Case caseTemp = grille.get(i).get(j);
 					caseTemp.render(g);
 				}
@@ -77,9 +83,9 @@ public class Plateau extends JPanel{
 			
 			//Bornes des boucles (ne pas sortir de l'indexation des listes:
 			int xinf = Math.max(x-FOV, 0);
-			int xsup = Math.min(x+FOV+1, size);
+			int xsup = Math.min(x+FOV+1, taille);
 			int yinf = Math.max(y-FOV, 0);
-			int ysup = Math.min(y+FOV+1, size);
+			int ysup = Math.min(y+FOV+1, taille);
 					
 			for(int i = xinf; i < xsup; i++){
 				for(int j = yinf; j < ysup; j++){
@@ -92,8 +98,13 @@ public class Plateau extends JPanel{
 		}		
      }
 	
+	
+	/*
+	 *  Implémentation:
+	 */
+	
 	//Ajoute une case à la ArrayList
-	public void addCase(Case c, int x, int y){
+	private void addCase(Case c, int x, int y){
 		this.grille.get(x).add(y, c);
 	}
 	
@@ -106,9 +117,9 @@ public class Plateau extends JPanel{
 	//Donne une liste des Dalles
 	public ArrayList<Case> getDalles(){		
 		ArrayList<Case> ls = new ArrayList<Case>();
-		for(int i = 0; i < size; i++ ){
+		for(int i = 0; i < taille; i++ ){
 			ArrayList<Case> listeTemp = grille.get(i);
-			for(int j = 0; j < size; j++){
+			for(int j = 0; j < taille; j++){
 				Case caseTemp = listeTemp.get(j);
 				if(caseTemp.getCaseType() == 0){
 					ls.add(caseTemp);
@@ -122,9 +133,9 @@ public class Plateau extends JPanel{
 		ArrayList<Case> ls = getDalles();
 		
 		for(Case caseTemp:ls){
-			int x = caseTemp.getX();
-			int y = caseTemp.getY();
-			if(!this.game.getPopulation().caseIsFree(x, y)){
+			int k = caseTemp.getX();
+			int l = caseTemp.getY();
+			if(!this.game.getPopulation().caseIsFree(k, l)){
 				//Si la case n'est pas libre, la retirer de la liste				
 				ls.remove(caseTemp);
 			}
@@ -134,10 +145,22 @@ public class Plateau extends JPanel{
 	}
 	
 	
-	public Case getCase(int x, int y){
-		Case res = this.grille.get(x).get(y);
+	public Case getCase(int k, int l){
+		Case res = this.grille.get(k).get(l);
 		return res;
 	}
+	
+	public int getTaille(){
+		return this.taille;
+	}
+
+	@Override
+	public void render(Graphics g) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 	
 	
 

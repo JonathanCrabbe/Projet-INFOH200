@@ -5,7 +5,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Mur extends Case {
+import main.VisualGameObject;
+
+public class Mur extends Case implements VisualGameObject{
 
 	public Mur(int x, int y) {
 		super(x, y, 1);
