@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import competences.AttaqueSimple;
+import items.Inventaire;
 import main.Game;
 import main.VisualGameObject;
 import plateau.Case;
@@ -22,6 +24,11 @@ public abstract class Personnage implements VisualGameObject {
 	private int HPMax;
 	protected int HP;
 	protected int force;
+	protected Inventaire inventaire;
+	
+	/*
+	 * Implémentation:
+	 */
 	
 	public Personnage(int x, int y, Game game){
 		this.x = x;
@@ -31,8 +38,10 @@ public abstract class Personnage implements VisualGameObject {
 		this.HPMax = 100;
 		this.HP = HPMax;
 		this.force = 50;
+		this.inventaire = construireInventaire();
 	}
 	
+	protected abstract Inventaire construireInventaire();
 	
 	/* 
 	 * Actualisation:
@@ -74,6 +83,10 @@ public abstract class Personnage implements VisualGameObject {
 	}
 	public boolean getEstJoueur(){
 		return estJoueur;
+	}
+	
+	public int getHPMax(){
+		return HPMax;
 	}
 	
 	//Renvoie la case sur laquelle se trouve le personnage:
@@ -138,7 +151,26 @@ public abstract class Personnage implements VisualGameObject {
 	public int getHP(){
 			return HP;
 	}
+	
+	//Renvoie la force
+	public int getForce(){
+		return this.force;
+	}
+	
+	public Inventaire getInventaire(){
+		return this.inventaire;
+	}
 
+	/*
+	 * Setters:
+	 */
+	
+	public void setHP(int HP){
+		if(HP <= HPMax){
+			this.HP = HP;
+		}
+	}
+	
 	
 	
 	/*
@@ -182,7 +214,7 @@ public abstract class Personnage implements VisualGameObject {
 	
 	
 	//Attaque l'ennemi ayant les corrdonnées (x,y)
-	public void attaqueCoord(int x, int y, int dmg){
+	public synchronized void attaqueCoord(int x, int y, int dmg){
 		if(!this.game.getPopulation().caseIsFree(x, y)){
 			Personnage target = this.game.getPopulation().getPerso(x, y);
 			target.getDammage(dmg);
@@ -193,14 +225,26 @@ public abstract class Personnage implements VisualGameObject {
 	public void attaqueUp(){
 		int xTarget = x;
 		int yTarget = y-1;
-		attaqueCoord(xTarget, yTarget, force);		
+		if(! this.game.getPopulation().caseIsFree(xTarget, yTarget)){
+			Personnage target = this.game.getPopulation().getPerso(xTarget, yTarget);
+			AttaqueSimple attaque = new AttaqueSimple(this, target);
+			attaque.run();
+			}
+		
+		//attaqueCoord(xTarget, yTarget, force);		
 	}
 	
 	//Attaque la case en dessous du personnage
 	public void attaqueDown(){
 		int xTarget = x;
 		int yTarget = y+1;
-		attaqueCoord(xTarget, yTarget, force);	
+		if(! this.game.getPopulation().caseIsFree(xTarget, yTarget)){
+			Personnage target = this.game.getPopulation().getPerso(xTarget, yTarget);
+			AttaqueSimple attaque = new AttaqueSimple(this, target);
+			attaque.run();
+			}
+		
+		//attaqueCoord(xTarget, yTarget, force);	
 		
 	}
 	
@@ -208,7 +252,13 @@ public abstract class Personnage implements VisualGameObject {
 	public void attaqueRight(){
 		int xTarget = x+1;
 		int yTarget = y;
-		attaqueCoord(xTarget, yTarget, force);	
+		if(! this.game.getPopulation().caseIsFree(xTarget, yTarget)){
+			Personnage target = this.game.getPopulation().getPerso(xTarget, yTarget);
+			AttaqueSimple attaque = new AttaqueSimple(this, target);
+			attaque.run();
+			}
+		
+		//attaqueCoord(xTarget, yTarget, force);	
 		
 	}
 	
@@ -216,7 +266,13 @@ public abstract class Personnage implements VisualGameObject {
 	public void attaqueLeft(){
 		int xTarget = x-1;
 		int yTarget = y;
-		attaqueCoord(xTarget, yTarget, force);	
+		if(! this.game.getPopulation().caseIsFree(xTarget, yTarget)){
+			Personnage target = this.game.getPopulation().getPerso(xTarget, yTarget);
+			AttaqueSimple attaque = new AttaqueSimple(this, target);
+			attaque.run();
+			}
+		
+		//attaqueCoord(xTarget, yTarget, force);	
 		
 	}
 	

@@ -117,6 +117,10 @@ public class Population implements VisualGameObject{
 		return perso;	
 	}
 	
+	public Personnage getJoueur(){
+		return getPerso(0);
+	}
+	
 	//Renvoie true si le joueur est en vie
 	public boolean playerIsAlive(){
 		boolean ans = false;
@@ -125,5 +129,6 @@ public class Population implements VisualGameObject{
 		}
 		return ans;
 	}
+	
 
 }

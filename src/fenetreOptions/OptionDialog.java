@@ -30,6 +30,7 @@ public class OptionDialog extends JDialog {
     this.setResizable(false);
     this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
     this.initComponent();
+    this.setVisible(true);
   }
 
   public OptionsDemarrage showDemarrage(){
@@ -80,22 +81,17 @@ public class OptionDialog extends JDialog {
 
     JPanel control = new JPanel();
     JButton okBouton = new JButton("OK");
+    JButton cancelBouton = new JButton("Annuler");
     
-    okBouton.addActionListener(new ActionListener());
+             
+    okBouton.addActionListener(new OptionsListener()});
 
-      JButton cancelBouton = new JButton("Annuler");
-      cancelBouton.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent arg0) {
-          setVisible(false);
-        }      
-      });
-
-      control.add(okBouton);
-      control.add(cancelBouton);
+    control.add(okBouton);
+    control.add(cancelBouton);
 
 
-      this.getContentPane().add(content, BorderLayout.CENTER);
-      this.getContentPane().add(control, BorderLayout.SOUTH);
+    this.getContentPane().add(content, BorderLayout.CENTER);
+    this.getContentPane().add(control, BorderLayout.SOUTH);
     }  
   }
   

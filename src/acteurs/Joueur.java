@@ -9,6 +9,8 @@ import java.io.IOException;
 
 import javax.imageio.*;
 
+import items.Inventaire;
+import items.Potion;
 import main.Game;
 import main.VisualGameObject;
 
@@ -64,6 +66,15 @@ public class Joueur extends Personnage implements VisualGameObject {
 		
 		g.drawImage(image,xp, yp, dim,dim, null);
 		
+	}
+
+
+	
+	protected Inventaire construireInventaire() {
+		Inventaire inventaire = new Inventaire(game, this, 50);
+		Potion potion = new Potion(this.game, 50);
+		inventaire.add(potion);
+		return inventaire;
 	}
 
 

@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
+import competences.AttaqueSimple;
+import items.Inventaire;
 import main.Game;
 import main.VisualGameObject;
 import plateau.Case;
@@ -33,7 +35,8 @@ public class Monstre extends PNJ implements VisualGameObject {
 				Personnage persoTemp = this.game.getPopulation().getPerso(xTemp, yTemp);
 			
 				if(persoTemp.getEstJoueur()){
-					this.attaqueCoord(xTemp, yTemp, this.force );
+					AttaqueSimple attaque = new AttaqueSimple(this, persoTemp);
+					attaque.run();
 					tourFini = true;
 				}
 			}	
@@ -50,6 +53,13 @@ public class Monstre extends PNJ implements VisualGameObject {
 				}									
 			}
 		}
+	}
+
+
+	
+	protected Inventaire construireInventaire() {
+		Inventaire inventaire = new Inventaire(game, this, 5);
+		return inventaire;
 	}
 
 	

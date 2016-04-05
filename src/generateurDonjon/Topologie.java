@@ -13,8 +13,8 @@ public class Topologie {
 	public Topologie(int tailleDonjon){	
 		
 		this.tailleDonjon = tailleDonjon;
-		this.nombreSalles = Math.round(tailleDonjon/10);
-		int tailleSalleMax = Math.round(tailleDonjon/10);
+		this.nombreSalles = Math.round(tailleDonjon/5);
+		int tailleSalleMax = Math.round(tailleDonjon/5);
 	    
 		//Chaque Salle a des attributs choisis aléatoirement, utilisation de la classe Random de Java
 		
@@ -63,7 +63,7 @@ public class Topologie {
 		        
 		        int j = 0;
 		        //Si on a déjà créé 2 couloirs:		        
-		        if(salles.size() >= 3) j = 3*(i-1) - 3;
+		        if(salles.size() >= 4) j = salles.size() - 4;
 		        int xc1 = salles.get(j).xc;
 		        int yc1 = salles.get(j).yc;
 		        

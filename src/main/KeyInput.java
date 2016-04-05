@@ -46,6 +46,8 @@ public class KeyInput extends KeyAdapter {
 				if(key == KeyEvent.VK_LEFT) persoTemp.attaqueLeft();
 				if(key == KeyEvent.VK_DOWN) persoTemp.attaqueDown();
 				
+				if(key == KeyEvent.VK_H)  persoTemp.getInventaire().useItem(0);
+				
 			}
 			
 		}

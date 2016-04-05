@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
-import GUI.GUI;
+
 import acteurs.Personnage;
 
 
@@ -30,13 +30,8 @@ public class FenetrePrincipale extends Canvas {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		
-		// Création du GUI:
 		
-		GUI topBar = new GUI(game);
-		
-		
-		
-		frame.add(topBar);
+	
 		frame.add(game);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);

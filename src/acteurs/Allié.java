@@ -7,7 +7,7 @@ import main.Game;
 import main.VisualGameObject;
 
 
-public class Allié extends PNJ implements VisualGameObject{
+public abstract class Allié extends PNJ implements VisualGameObject{
 
 	public Allié(int x, int y, int vitesse, Game game) {
 		super(x, y, game);

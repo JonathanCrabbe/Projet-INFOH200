@@ -5,8 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import GUI.TopBar;
 import acteurs.*;
-import fenetreOptions.FenetreOption;
+import fenetreOptions.OptionDialog;
 import fenetreOptions.OptionsDemarrage;
 import plateau.Case;
 import plateau.Plateau;
@@ -24,6 +25,7 @@ public class Game extends Canvas implements Runnable{
 	
 	private Population population;
 	private Plateau plateau;
+	private TopBar gui;
 	
 	private final int taillePlateau = 100;
 	private final int nombreMonstres = 20;
@@ -32,12 +34,14 @@ public class Game extends Canvas implements Runnable{
 	
 	public Game(){
 		
-		//new FenetreOption();
 		
+		//OptionDialog fenetreOptions = new OptionDialog(null, "Options de jeu", true);
 		
 		
 		plateau = new Plateau(taillePlateau, this);
 		population = new Population(nombreMonstres,this);
+		gui = new TopBar(this);
+		
 		
 		this.addKeyListener(new KeyInput(population));
 		
@@ -110,9 +114,10 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private synchronized void tick(){
-		//Actualisation population et plateau:
+		//Actualisation population et plateau et GUI:
 		population.tick();
 		plateau.tick();	
+		gui.tick();
 	}
 	
 	private void render(){
@@ -130,6 +135,7 @@ public class Game extends Canvas implements Runnable{
 		Personnage player = population.getPerso(0);
 		plateau.renderLocal(g, player.getX(), player.getY());
 		population.render(g);
+		gui.render(g);
 		
 		
 		g.dispose();

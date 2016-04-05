@@ -19,19 +19,6 @@ public class OptionsListener implements ActionListener {
 	
 		
 	/*
-	  	  public void actionPerformed(ActionEvent arg0) {        
-	        options = new Optionsdemarrage(getPerso(),getTaille());
-	        
-	      }
-	      public String getPerso(){
-	          return (tranche1.isSelected()) ? tranche1.getText() : 
-	                 (tranche2.isSelected()) ? tranche2.getText() : 
-	                 (tranche3.isSelected()) ? tranche3.getText() :  
-	                  tranche1.getText();  
-	        }
-
-	        public String getTaille(){
-	          return (tailleField.getText().equals("")) ? "50" : tailleField.getText();
-	        }  
+	  	 
 	      */      
 }
