@@ -30,9 +30,12 @@ public abstract class PNJ extends Personnage implements VisualGameObject {
 			int FOV = Joueur.FOV;			
 			int dim = Case.dim;
 			
+			int xi = dim*(x+FOV-xp);
+			int yi = dim*(y+FOV-yp);
+			
 			//Dessiner dans le repère de la fenêtre
-			g.setColor(Color.red);
-			g.fillRect(dim*(x+FOV-xp), dim*(y+FOV-yp), dim, dim);
+			g.drawImage(image, xi,yi , dim,dim, null);
+			//g.fillRect(dim*(x+FOV-xp), dim*(y+FOV-yp), dim, dim);
 			}
 			
 

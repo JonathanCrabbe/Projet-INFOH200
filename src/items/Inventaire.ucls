@@ -28,8 +28,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="items.Inventaire" project="Projet-INFOH200" 
-    file="/Projet-INFOH200/src/items/Inventaire.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="4" language="java" name="inventaire.Inventaire" project="Projet-INFOH200" 
+    file="/Projet-INFOH200/src/inventaire/Inventaire.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="153" width="184" x="228" y="202"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -38,17 +38,21 @@
     </display>  
   </class>  
   <generalization id="5">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <generalization id="6">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="3"/>  
   </generalization>  
+  <generalization id="6">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
   <association id="7">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="8" name="items"/>      
-      <multiplicity id="9" minimum="0" maximum="2147483647"/>    
+      <attribute id="8" name="items">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="9" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  

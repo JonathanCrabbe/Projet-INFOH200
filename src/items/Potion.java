@@ -1,5 +1,10 @@
 package items;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import acteurs.Personnage;
 import main.Game;
 
@@ -10,6 +15,12 @@ public class Potion extends Consommable {
 	public Potion(Game game, int puissance) {
 		super(game);
 		this.puissance = puissance;
+		
+		try {
+			this.itemImage = ImageIO.read(new File("Images/Objets/Potion.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	//Soigne le joueur

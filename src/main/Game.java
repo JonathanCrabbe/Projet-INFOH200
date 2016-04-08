@@ -9,6 +9,8 @@ import GUI.TopBar;
 import acteurs.*;
 import fenetreOptions.OptionDialog;
 import fenetreOptions.OptionsDemarrage;
+import inventaire.Inventaire;
+import inventaire.InventaireMouse;
 import plateau.Case;
 import plateau.Plateau;
 
@@ -45,6 +47,10 @@ public class Game extends Canvas implements Runnable{
 		
 		this.addKeyListener(new KeyInput(population));
 		
+		Inventaire inventaireJoueur = population.getJoueur().getInventaire();
+		this.addMouseListener(new InventaireMouse(inventaireJoueur));
+		
+		
 		new FenetrePrincipale(WIDTH, HEIGHT, "Rogue Heritage", this);	
 		
 	}
@@ -58,11 +64,10 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public synchronized void stop(){
-		try{
-			// Tue le thread
-			thread.join();
-			running = false;
-			
+		try{		
+		thread.join();
+		running = false;
+				
 		}catch(Exception e){
 			e.printStackTrace();  //Affiche erreur dans la console
 		}
@@ -136,6 +141,7 @@ public class Game extends Canvas implements Runnable{
 		plateau.renderLocal(g, player.getX(), player.getY());
 		population.render(g);
 		gui.render(g);
+		player.getInventaire().render(g);
 		
 		
 		g.dispose();

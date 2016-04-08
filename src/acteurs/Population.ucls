@@ -3,7 +3,7 @@
   realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <class id="1" language="java" name="acteurs.Monstre" project="Projet-INFOH200" 
     file="/Projet-INFOH200/src/acteurs/Monstre.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="133" x="53" y="909"/>    
+    <position height="135" width="180" x="79" y="1399"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -12,7 +12,7 @@
   </class>  
   <class id="2" language="java" name="acteurs.PNJ" project="Projet-INFOH200" 
     file="/Projet-INFOH200/src/acteurs/PNJ.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="81" width="91" x="95" y="752"/>    
+    <position height="117" width="133" x="79" y="1188"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="acteurs.Allié" project="Projet-INFOH200" 
     file="/Projet-INFOH200/src/acteurs/Allié.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="295" y="967"/>    
+    <position height="117" width="133" x="299" y="1399"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -30,7 +30,7 @@
   </class>  
   <class id="4" language="java" name="acteurs.Population" project="Projet-INFOH200" 
     file="/Projet-INFOH200/src/acteurs/Population.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="189" width="209" x="150" y="60"/>    
+    <position height="297" width="209" x="166" y="-8"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="acteurs.Joueur" project="Projet-INFOH200" 
     file="/Projet-INFOH200/src/acteurs/Joueur.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="133" x="226" y="752"/>    
+    <position height="171" width="180" x="252" y="1188"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="acteurs.Personnage" project="Projet-INFOH200" 
     file="/Projet-INFOH200/src/acteurs/Personnage.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="423" width="172" x="150" y="289"/>    
+    <position height="819" width="238" x="166" y="329"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -56,33 +56,29 @@
     </display>  
   </class>  
   <generalization id="7">    
-    <end type="SOURCE" refId="1"/>    
+    <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="2"/>  
   </generalization>  
   <generalization id="8">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="6"/>  
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
   </generalization>  
   <generalization id="9">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="6"/>  
   </generalization>  
-  <association id="10">    
+  <generalization id="10">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <association id="11">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="11" name="personnages">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="12" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
+      <attribute id="12" name="personnages"/>      
+      <multiplicity id="13" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="13">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

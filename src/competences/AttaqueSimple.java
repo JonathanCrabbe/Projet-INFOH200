@@ -22,8 +22,9 @@ public class AttaqueSimple implements Runnable {
 	
 	
 	public void run() {
-			
-		attaquant.attaqueCoord(xTarget, yTarget, dmg);
+		
+		cible.getDammage(dmg);
+		//attaquant.attaqueCoord(xTarget, yTarget, dmg);
 	}
 
 }

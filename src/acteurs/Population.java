@@ -57,7 +57,7 @@ public class Population implements VisualGameObject{
 		}
 		for(int i = 0; i < personnages.size(); i++){
 			Personnage persoTemp = personnages.get(i);
-			if(persoTemp.getHP() == 0) {
+			if(persoTemp.getHP() <= 0) {
 				personnages.remove(persoTemp);
 			}
 			

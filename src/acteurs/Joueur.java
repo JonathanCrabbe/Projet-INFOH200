@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import javax.imageio.*;
 
-import items.Inventaire;
+import inventaire.Inventaire;
 import items.Potion;
 import main.Game;
 import main.VisualGameObject;
@@ -71,9 +71,10 @@ public class Joueur extends Personnage implements VisualGameObject {
 
 	
 	protected Inventaire construireInventaire() {
-		Inventaire inventaire = new Inventaire(game, this, 50);
-		Potion potion = new Potion(this.game, 50);
-		inventaire.add(potion);
+		Inventaire inventaire = new Inventaire(game, this, 35);
+		inventaire.add(new Potion(this.game, 50));
+		inventaire.add(new Potion(this.game, 50));
+		inventaire.add(new Potion(this.game, 50));
 		return inventaire;
 	}
 

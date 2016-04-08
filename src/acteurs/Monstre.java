@@ -2,11 +2,15 @@ package acteurs;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
+
 import competences.AttaqueSimple;
-import items.Inventaire;
+import inventaire.Inventaire;
 import main.Game;
 import main.VisualGameObject;
 import plateau.Case;
@@ -18,6 +22,12 @@ public class Monstre extends PNJ implements VisualGameObject {
 	public Monstre(int x, int y, Game game) {
 		super(x, y, game);
 		this.force = 5;
+		
+		try {
+			this.image = ImageIO.read(new File("Images/Monstre.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

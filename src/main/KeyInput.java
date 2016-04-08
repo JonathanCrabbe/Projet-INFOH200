@@ -48,6 +48,8 @@ public class KeyInput extends KeyAdapter {
 				
 				if(key == KeyEvent.VK_H)  persoTemp.getInventaire().useItem(0);
 				
+				if(key == KeyEvent.VK_I) persoTemp.getInventaire().changeVisible();
+				
 			}
 			
 		}

@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import competences.AttaqueSimple;
-import items.Inventaire;
+import inventaire.Inventaire;
 import main.Game;
 import main.VisualGameObject;
 import plateau.Case;
@@ -66,7 +66,7 @@ public abstract class Personnage implements VisualGameObject {
 	}
 	
 	//Fait subir au personnage un dégat d
-	public void getDammage(int d){
+	public synchronized void getDammage(int d){
 		this.HP -= d;
 	}
 	
