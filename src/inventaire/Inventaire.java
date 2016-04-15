@@ -26,9 +26,19 @@ public  class Inventaire implements VisualGameObject {
 		slots = new ArrayList<Slot>();
 		for(int i = 0; i < capacite; i++){
 			
+			//Position dans une grille dim*dim:
 			int x = Math.floorMod(i, dim);
 			int y = Math.floorDiv(i, dim);
-			slots.add(new Slot(x,y, game ));
+			
+			//Différencier un joueur d'un monstre:
+			
+			if(porteur.getEstJoueur()){
+				slots.add(new SlotJoueur(x,y, game, this));
+			}
+			else{
+				slots.add(new SlotButin(x,y,game,this));
+			}
+			
 		}
 		
 	}
@@ -124,7 +134,12 @@ public  class Inventaire implements VisualGameObject {
 	 */
 	
 	public void changeVisible(){
+		
 		this.isVisible = !isVisible;
+	}
+	
+	public void setPorteur(Personnage porteur){
+		this.porteur = porteur;
 	}
 
 	

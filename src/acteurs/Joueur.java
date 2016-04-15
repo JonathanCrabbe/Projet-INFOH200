@@ -26,6 +26,8 @@ public class Joueur extends Personnage implements VisualGameObject {
 	public Joueur(int x, int y, int vitesse, Game game) {
 		super(x, y, game);
 		this.estJoueur = true;
+		this.inventaire = construireInventaire();
+		
 
 		
 		try {

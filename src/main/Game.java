@@ -29,7 +29,7 @@ public class Game extends Canvas implements Runnable{
 	private Plateau plateau;
 	private TopBar gui;
 	
-	private final int taillePlateau = 100;
+	private  int taillePlateau = 100;
 	private final int nombreMonstres = 20;
 
 	
@@ -37,7 +37,7 @@ public class Game extends Canvas implements Runnable{
 	public Game(){
 		
 		
-		//OptionDialog fenetreOptions = new OptionDialog(null, "Options de jeu", true);
+		OptionDialog fenetreOptions = new OptionDialog(this,null, "Options de jeu", true);
 		
 		
 		plateau = new Plateau(taillePlateau, this);
@@ -47,8 +47,12 @@ public class Game extends Canvas implements Runnable{
 		
 		this.addKeyListener(new KeyInput(population));
 		
-		Inventaire inventaireJoueur = population.getJoueur().getInventaire();
-		this.addMouseListener(new InventaireMouse(inventaireJoueur));
+		//Tous les inventaires doivent pouvoir être écoutés:
+		for(Personnage persoTemp:population.getPersonnages()){
+			Inventaire inventaireTemp = persoTemp.getInventaire();
+			this.addMouseListener(new InventaireMouse(inventaireTemp));
+		}
+		
 		
 		
 		new FenetrePrincipale(WIDTH, HEIGHT, "Rogue Heritage", this);	
@@ -143,6 +147,14 @@ public class Game extends Canvas implements Runnable{
 		gui.render(g);
 		player.getInventaire().render(g);
 		
+		//Affichage du contenu des cases loot:
+		for(Case caseTemp:plateau.getDalles()){
+			Inventaire butin = caseTemp.getButin();
+			if(butin != null){
+				butin.render(g);
+			}
+		}
+		
 		
 		g.dispose();
 		bs.show();
@@ -156,6 +168,17 @@ public class Game extends Canvas implements Runnable{
 	
 	public Plateau getPlateau(){
 		return this.plateau;
+	}
+	
+	
+	/*
+	 * Setters:
+	 */
+	
+	public void setTaillePlateau(int taillePlateau){
+		if(taillePlateau > 50){
+			this.taillePlateau = taillePlateau;
+		}
 	}
 	
 	

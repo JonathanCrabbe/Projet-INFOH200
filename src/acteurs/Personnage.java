@@ -276,4 +276,14 @@ public abstract class Personnage implements VisualGameObject {
 		
 	}
 	
+	/*
+	 *  Inventaire
+	 */
+	
+	protected void dropInventory(){
+		
+		this.inventaire.setPorteur(null);
+		Case caseDrop = this.getCase();
+		caseDrop.setButin(this.inventaire);
+	}
 }

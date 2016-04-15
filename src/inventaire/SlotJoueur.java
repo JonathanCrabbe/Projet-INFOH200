@@ -17,7 +17,7 @@ public class SlotJoueur extends Slot {
 	public void leftClick() {
 		Inventaire inventaire = getInventaire();
 		inventaire.useItem(getXGrid(), getYGrid());
-		setItem(null);
+		this.setItem(null);
 		
 	}
 

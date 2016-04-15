@@ -58,6 +58,7 @@ public class Population implements VisualGameObject{
 		for(int i = 0; i < personnages.size(); i++){
 			Personnage persoTemp = personnages.get(i);
 			if(persoTemp.getHP() <= 0) {
+				persoTemp.dropInventory(); //Fait tomber le butin par terre
 				personnages.remove(persoTemp);
 			}
 			
@@ -100,6 +101,10 @@ public class Population implements VisualGameObject{
 	
 	public int getSize(){
 		return personnages.size();
+	}
+	
+	public ArrayList<Personnage> getPersonnages(){
+		return this.personnages;
 	}
 	
 	public Personnage getPerso(int i){

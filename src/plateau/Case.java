@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import acteurs.Personnage;
+import inventaire.Inventaire;
 import main.VisualGameObject;
 
 public abstract class Case implements VisualGameObject{
@@ -13,6 +14,7 @@ public abstract class Case implements VisualGameObject{
 	protected int x;
 	protected int y;
 	protected int caseType;
+	private Inventaire butin;
 
 
 	
@@ -48,11 +50,27 @@ public abstract class Case implements VisualGameObject{
 		return this.y;
 	}
 	
+	public Inventaire getButin(){
+		return this.butin;
+	}
+	
 	/*
 	 * Setters:
 	 */
 	
+	public void setButin(Inventaire butin){
+		this.butin = butin;
+	}
 	
+	/*
+	 * Inventaire
+	 */
+	
+	public void afficherButin(){
+		if(this.butin != null){
+			butin.changeVisible();
+		}
+	}
 
 
 	

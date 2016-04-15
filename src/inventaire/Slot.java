@@ -32,6 +32,7 @@ public abstract class Slot extends Rectangle implements VisualGameObject {
 		this.game = game;
 		this.inventaire = inventaire;
 		
+		
 	}
 	
 	public abstract void leftClick();
@@ -48,7 +49,6 @@ public abstract class Slot extends Rectangle implements VisualGameObject {
 			
 			g.drawImage(item.getImage(), xi,yi, size, size, null);
 		}
-		
 		g.setColor(Color.BLUE);
 		g.drawRect(xi, yi, size, size);	
 	}
@@ -85,6 +85,10 @@ public abstract class Slot extends Rectangle implements VisualGameObject {
 		return inventaire;
 	}
 	
+	public Game getGame(){
+		return game;
+	}
+	
 	
 	/*
 	 * Setters:
@@ -95,15 +99,13 @@ public abstract class Slot extends Rectangle implements VisualGameObject {
 	}
 	
 	public void setXi(int xi){
-		if(xi >= 0 ){
-			this.xi = xi;
-		}
+		this.xi = xi;
+		
 	}
 	
 	public void setYi(int yi){
-		if(yi >= 0 ){
-			this.yi = yi;
-		}
+		this.yi = yi;
+		
 	}
 	
 

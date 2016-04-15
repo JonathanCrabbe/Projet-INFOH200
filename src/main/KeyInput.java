@@ -36,20 +36,21 @@ public class KeyInput extends KeyAdapter {
 				
 				// Évènements déclanchés pour le joueur:
 				
+				//Déplacements:
 				if(key == KeyEvent.VK_Z) persoTemp.moveUp();
 				if(key == KeyEvent.VK_Q) persoTemp.moveLeft();
 				if(key == KeyEvent.VK_S) persoTemp.moveDown();
 				if(key == KeyEvent.VK_D) persoTemp.moveRight();
 				
+				//Attaques:
 				if(key == KeyEvent.VK_UP) persoTemp.attaqueUp();
 				if(key == KeyEvent.VK_RIGHT) persoTemp.attaqueRight();
 				if(key == KeyEvent.VK_LEFT) persoTemp.attaqueLeft();
 				if(key == KeyEvent.VK_DOWN) persoTemp.attaqueDown();
 				
-				if(key == KeyEvent.VK_H)  persoTemp.getInventaire().useItem(0);
-				
+				//Inventaire:
 				if(key == KeyEvent.VK_I) persoTemp.getInventaire().changeVisible();
-				
+				if(key == KeyEvent.VK_E) persoTemp.getCase().afficherButin();
 			}
 			
 		}

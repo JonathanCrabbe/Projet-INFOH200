@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 
 import competences.AttaqueSimple;
 import inventaire.Inventaire;
+import items.Potion;
 import main.Game;
 import main.VisualGameObject;
 import plateau.Case;
@@ -69,6 +70,7 @@ public class Monstre extends PNJ implements VisualGameObject {
 	
 	protected Inventaire construireInventaire() {
 		Inventaire inventaire = new Inventaire(game, this, 5);
+		inventaire.add(new Potion(game, 50));
 		return inventaire;
 	}
 
