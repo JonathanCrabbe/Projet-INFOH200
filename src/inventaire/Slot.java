@@ -10,28 +10,33 @@ import main.Game;
 import main.VisualGameObject;
 import plateau.Dalle;
 
-public class Slot extends Rectangle implements VisualGameObject { 
+public abstract class Slot extends Rectangle implements VisualGameObject { 
 	/*
 	 *  Cette classe gère les slots d'inventaire et contiennent un objet.
 	 *  Hérite de Rectangle pour l'interraction souris.
 	 */
 	private Game game;
+	private Inventaire inventaire;
 	private Item item;
 	private int x,y; //Position sur la grille 
 	private int  size = Dalle.dim;
 	private int xi, yi; //Position sur le Canvas Game
 
+
 	
 	private boolean isClicked;
 	
-	public Slot(int x, int y, Game game){
+	public Slot(int x, int y, Game game, Inventaire inventaire){
 		this.x = x;
 		this.y = y;
 		this.game = game;
-		this.xi = (x- Joueur.FOV)*size + Math.round(Game.WIDTH / 2)+size;
-		this.yi = (y- Joueur.FOV)*size + Math.round(Game.HEIGHT / 2)+size;
-		setBounds(xi, yi, size, size);
+		this.inventaire = inventaire;
+		
 	}
+	
+	public abstract void leftClick();
+	
+	public abstract void rightClick();
 	
 	public void tick(){
 		
@@ -60,6 +65,25 @@ public class Slot extends Rectangle implements VisualGameObject {
 		return(item == null);
 	}
 	
+	public int getXi(){
+		return xi;
+	}
+	
+	public int getYi(){
+		return yi;
+	}
+	
+	public int getXGrid(){
+		return x;
+	}
+	
+	public int getYGrid(){
+		return y;
+	}
+	
+	public Inventaire getInventaire(){
+		return inventaire;
+	}
 	
 	
 	/*
@@ -70,6 +94,17 @@ public class Slot extends Rectangle implements VisualGameObject {
 		this.item = item;
 	}
 	
+	public void setXi(int xi){
+		if(xi >= 0 ){
+			this.xi = xi;
+		}
+	}
+	
+	public void setYi(int yi){
+		if(yi >= 0 ){
+			this.yi = yi;
+		}
+	}
 	
 
 }

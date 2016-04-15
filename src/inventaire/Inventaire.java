@@ -9,11 +9,11 @@ import items.Item;
 import main.Game;
 import main.VisualGameObject;
 
-public class Inventaire implements VisualGameObject {
-	private Game game;
-	private Personnage porteur; //Personnage qui porte cet inventaire
+public  class Inventaire implements VisualGameObject {
+	protected Game game;
+	protected Personnage porteur; //Personnage qui porte cet inventaire
 	private int capacite;  
-	private ArrayList<Slot> slots; //Liste d'items dans l'inventaire
+	protected ArrayList<Slot> slots; //Liste d'items dans l'inventaire
 	
 	private final int dim = Joueur.FOV;
 	private boolean isVisible;
@@ -36,7 +36,7 @@ public class Inventaire implements VisualGameObject {
 	
 	
 	public void tick() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -69,12 +69,19 @@ public class Inventaire implements VisualGameObject {
 		
 	}
 	
+
 	public void useItem(int i){
-		
-		Item item = this.slots.get(i).getItem();
-		if(item != null){
-			item.useOn(this.porteur);
-			delItem(i);
+		Item itemTemp = this.slots.get(i).getItem();
+		if(itemTemp != null){
+			itemTemp.useOn(porteur);
+		}
+	}
+	
+	//Surcharge de méthode:
+	public void useItem(int x, int y){
+		Item itemTemp = getSlot(x, y).getItem();
+		if(itemTemp != null){
+			itemTemp.useOn(porteur);
 		}
 	}
 	
@@ -97,6 +104,17 @@ public class Inventaire implements VisualGameObject {
 	
 	public int getCapacite(){
 		return this.capacite;
+	}
+	
+	public Slot getSlot(int x, int y){
+		Slot slot = null;
+		ArrayList<Slot> slots = getSlots();
+		for(Slot slotTemp : slots){
+			if(slotTemp.getXGrid() == x && slotTemp.getYGrid() == y){
+				slot = slotTemp;
+			}
+		}
+		return slot;
 	}
 	
 	
