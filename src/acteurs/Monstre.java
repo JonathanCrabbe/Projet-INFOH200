@@ -19,6 +19,8 @@ import plateau.Case;
 public class Monstre extends PNJ implements VisualGameObject {
 	
 	private Random rd = new Random(); //Pour les décisions aléatoires
+	public static final int waitTime = 2000; //Temps entre chaque action (milliseconde)
+	private Thread action;
 
 	public Monstre(int x, int y, Game game) {
 		super(x, y, game);
@@ -33,7 +35,8 @@ public class Monstre extends PNJ implements VisualGameObject {
 	}
 
 	
-	public void tick() {
+	public void tick(){
+		
 		
 		//Cherche si le joueur est accessible. Si oui, l'attaquer.
 		boolean tourFini = false;
@@ -50,7 +53,7 @@ public class Monstre extends PNJ implements VisualGameObject {
 					attaque.run();
 					tourFini = true;
 				}
-			}	
+			} 
 		}
 		
 		if(! tourFini){
@@ -64,6 +67,7 @@ public class Monstre extends PNJ implements VisualGameObject {
 				}									
 			}
 		}
+			
 	}
 
 

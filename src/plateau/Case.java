@@ -3,6 +3,10 @@ package plateau;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import acteurs.Personnage;
 import inventaire.Inventaire;
@@ -30,10 +34,23 @@ public abstract class Case implements VisualGameObject{
 	
 	public abstract  void tick();
 	
-	public void render(Graphics g){
-		g.drawImage(image, x*dim, y*dim, dim, dim, null);
+	public void render(Graphics g, int xi, int yi){
+		g.drawImage(image, xi*dim, yi*dim, dim, dim, null);
+		if(this.butin != null){
+			try {
+				g.drawImage(ImageIO.read(new File("Images/Cases/Loot.png")), xi*dim, yi*dim, dim, dim, null);
+			} catch (IOException e) {}
+		}
 	}
 	
+	public void render(Graphics g){
+		g.drawImage(image, x*dim, y*dim, dim, dim, null);
+		if(this.butin != null){
+			try {
+				g.drawImage(ImageIO.read(new File("Images/Cases/Loot.png")), x*dim, y*dim, dim, dim, null);
+			} catch (IOException e) {}
+		}
+	}
 	
 	/*
 	 * Getters:

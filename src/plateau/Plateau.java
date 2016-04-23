@@ -91,7 +91,8 @@ public class Plateau extends JPanel implements VisualGameObject{
 				for(int j = yinf; j < ysup; j++){
 					Case caseTemp = grille.get(i).get(j);
 					int dim = Case.dim;
-					g.drawImage(caseTemp.image, dim*(i+FOV-x), dim*(j+FOV-y), dim,dim, null);
+					caseTemp.render(g, (i+FOV-x), (j+FOV-y));
+					
 				}
 				
 			}

@@ -51,6 +51,7 @@ public class KeyInput extends KeyAdapter {
 				//Inventaire:
 				if(key == KeyEvent.VK_I) persoTemp.getInventaire().changeVisible();
 				if(key == KeyEvent.VK_E) persoTemp.getCase().afficherButin();
+				
 			}
 			
 		}

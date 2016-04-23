@@ -150,7 +150,7 @@ public class Game extends Canvas implements Runnable{
 		//Affichage du contenu des cases loot:
 		for(Case caseTemp:plateau.getDalles()){
 			Inventaire butin = caseTemp.getButin();
-			if(butin != null){
+			if(butin != null && player.getCase() == caseTemp){
 				butin.render(g);
 			}
 		}
