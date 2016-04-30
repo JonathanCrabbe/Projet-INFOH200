@@ -1,6 +1,7 @@
 package inventaire;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import acteurs.Joueur;
@@ -9,8 +10,8 @@ import items.Item;
 import main.Game;
 import main.VisualGameObject;
 
-public  class Inventaire implements VisualGameObject {
-	protected Game game;
+public  class Inventaire implements VisualGameObject, Serializable {
+	protected  Game game;
 	protected Personnage porteur; //Personnage qui porte cet inventaire
 	private int capacite;  
 	protected ArrayList<Slot> slots; //Liste d'items dans l'inventaire
@@ -40,6 +41,8 @@ public  class Inventaire implements VisualGameObject {
 			}
 			
 		}
+		//Tous les inventaires doivent pouvoir être écoutés:
+		this.game.addMouseListener(new InventaireMouse(this));
 		
 	}
 	
@@ -136,6 +139,10 @@ public  class Inventaire implements VisualGameObject {
 	public void changeVisible(){
 		
 		this.isVisible = !isVisible;
+	}
+	
+	public void setVisible(boolean ans){
+		this.isVisible = ans;
 	}
 	
 	public void setPorteur(Personnage porteur){

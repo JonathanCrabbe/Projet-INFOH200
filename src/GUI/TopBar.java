@@ -5,11 +5,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.Serializable;
 
 import main.Game;
 import main.VisualGameObject;
 
-public class TopBar extends Canvas implements VisualGameObject {
+public class TopBar extends Canvas implements VisualGameObject, Serializable {
 	
 	private Game game;
 	private int playerHP;
@@ -31,12 +32,14 @@ public class TopBar extends Canvas implements VisualGameObject {
 		
 		g.setColor(Color.white);
 		g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT/20);
-		Font font = new Font("Courier", Font.BOLD, 20); //Police
+		Font font = new Font("Courier", Font.BOLD, 15); //Police
 		g.setFont(font);
 		g.setColor(Color.red);
 		g.drawString("HP: " + String.valueOf(playerHP) + " / " + String.valueOf(playerHPMax) , 15, 20);
 		g.setColor(Color.blue);
-		g.drawString("Monstres: " + String.valueOf(mobsAlive) , Game.WIDTH / 3, 20);
+		g.drawString("Monstres: " + String.valueOf(mobsAlive) , 5*Game.WIDTH / 10, 20);
+		g.setColor(Color.green);
+		g.drawString("Score: " + String.valueOf(game.getScore()) , 8*Game.WIDTH / 10, 20);
 	}
 
 	

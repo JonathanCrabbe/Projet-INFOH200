@@ -19,12 +19,13 @@ import javax.swing.JTextField;
 import main.Game;
 
 public class OptionDialog extends JDialog {
-	private OptionsDemarrage options = new OptionsDemarrage();
 	private boolean sendData;
-	private JLabel persoLabel, tailleLabel,taille2Label;
+	private JLabel nomLabel, tailleLabel;
 	private JRadioButton tranche1, tranche2, tranche3;
-	private JTextField tailleField;
+	private JTextField tailleField, nomField;
 	private Game game;
+	
+	
 
 	public OptionDialog(Game game, JFrame parent, String title, boolean modal){
 		super(parent, title, modal);
@@ -37,10 +38,6 @@ public class OptionDialog extends JDialog {
 		this.setVisible(true);
 	}
 
-	public OptionsDemarrage getOptions(){
-		this.sendData = false;     
-		return this.options;      
-	}
 
 	private void initComponent(){
 
@@ -64,33 +61,44 @@ public class OptionDialog extends JDialog {
 		panPerso.add(tranche3);
     
 		//La taille
-		JPanel panTaille = new JPanel();
-		panTaille.setBackground(Color.white);
-		panTaille.setPreferredSize(new Dimension(400, 125));
-		panTaille.setBorder(BorderFactory.createTitledBorder("Taille du plateau"));
+		JPanel panTexte = new JPanel();
+		panTexte.setBackground(Color.white);
+		panTexte.setPreferredSize(new Dimension(400, 125));
+		panTexte.setBorder(BorderFactory.createTitledBorder("Taille du plateau"));
 		tailleLabel = new JLabel("Taille : ");
-		//taille2Label = new JLabel(" cm");
+		nomLabel = new JLabel("Nom: ");
 		tailleField = new JTextField("50");
 		tailleField.setPreferredSize(new Dimension(120, 50));
-		panTaille.add(tailleLabel);
-		panTaille.add(tailleField);
-		//panTaille.add(taille2Label);
+		nomField = new JTextField("Billy Mitchell");
+		nomField.setPreferredSize(new Dimension(120, 50));
+		panTexte.add(tailleLabel);
+		panTexte.add(tailleField);
+		panTexte.add(nomLabel);
+		panTexte.add(nomField);
+	
 
 		JPanel content = new JPanel();
 		content.setBackground(Color.white);
 		content.add(panPerso);
-		content.add(panTaille);
+		content.add(panTexte);
 
 
 		JPanel control = new JPanel();
-		JButton okBouton = new JButton("OK");
+		JButton okBouton = new JButton("Nouvelle Partie");
+		JButton loadBouton = new JButton("Charger Partie");
 		JButton cancelBouton = new JButton("Annuler");
+		
     
              
-		okBouton.addActionListener(new OkListener(game,this, bg, tailleField));
+		okBouton.addActionListener(new OkListener(game,this, bg, 
+				tailleField, nomField));
+		loadBouton.addActionListener(new LoadListener(game, this));
+		cancelBouton.addActionListener(new CancelListener(game, this));
 
 		control.add(okBouton);
+		control.add(loadBouton);
 		control.add(cancelBouton);
+		
 
 
 		this.getContentPane().add(content, BorderLayout.CENTER);

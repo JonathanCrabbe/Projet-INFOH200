@@ -3,6 +3,7 @@ package acteurs;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import competences.AttaqueSimple;
@@ -11,13 +12,12 @@ import main.Game;
 import main.VisualGameObject;
 import plateau.Case;
 
-public abstract class Personnage implements VisualGameObject {
+public abstract class Personnage implements VisualGameObject, Serializable {
 	
 	protected Game game;
 	protected int x;
 	protected int y;
 	private int vitesse;
-	protected BufferedImage image;
 	protected int vx;
 	protected int vy;
 	protected boolean estJoueur;
@@ -65,6 +65,24 @@ public abstract class Personnage implements VisualGameObject {
 		this.y = y;
 	}
 	
+	/*
+	 * Setters:
+	 */
+	
+	public void setHP(int HP){
+		if(HP <= HPMax){
+			this.HP = HP;
+		}
+	}
+
+	public void setHPMax(int HPMax){
+		if(HPMax > 0) this.HPMax = HPMax;
+	}
+	
+	public void setForce(int force){
+		if(force > 0) this.force = force;
+	}
+	
 	//Fait subir au personnage un dégat d
 	public synchronized void getDammage(int d){
 		this.HP -= d;
@@ -96,7 +114,7 @@ public abstract class Personnage implements VisualGameObject {
 	}
 	
 	//Renvoie les cases accessibles au personnage
-	protected ArrayList<Case> getReachableCases(){
+	public ArrayList<Case> getReachableCases(){
 		ArrayList<Case> ls = new ArrayList<Case>();
 		
 		int taille = this.game.getPlateau().getTaille();
@@ -127,7 +145,7 @@ public abstract class Personnage implements VisualGameObject {
 	
 	
 	 //Renvoie les cases libres accessibles au personnage
-	protected ArrayList<Case> getFreeReachableCases(){
+	public ArrayList<Case> getFreeReachableCases(){
 			
 			ArrayList<Case> ls = getReachableCases();		
 			
@@ -143,9 +161,7 @@ public abstract class Personnage implements VisualGameObject {
 			return ls;
 	}
 		
-	public BufferedImage getImage(){
-			return this.image;
-	}
+	
 		
 	//Renvoie les points de vie du personnage
 	public int getHP(){
@@ -161,18 +177,6 @@ public abstract class Personnage implements VisualGameObject {
 		return this.inventaire;
 	}
 
-	/*
-	 * Setters:
-	 */
-	
-	public void setHP(int HP){
-		if(HP <= HPMax){
-			this.HP = HP;
-		}
-	}
-	
-	
-	
 	/*
 	 * Mouvement:
 	 */

@@ -18,10 +18,13 @@ import acteurs.Population;
  */
 public class KeyInput extends KeyAdapter { 
 	
-	private Population population;  									// Pour manipuler le joueur
+	private Population population;
+	private Game game;
 	
-	public KeyInput(Population population){
+	public KeyInput(Game game, Population population){
+		this.game = game;
 		this.population = population;
+		
 	}
 	
 	public void keyPressed(KeyEvent e){
@@ -50,9 +53,11 @@ public class KeyInput extends KeyAdapter {
 				
 				//Inventaire:
 				if(key == KeyEvent.VK_I) persoTemp.getInventaire().changeVisible();
-				if(key == KeyEvent.VK_E) persoTemp.getCase().afficherButin();
 				
 			}
+			
+			//Sauvegarde:
+			if(key == KeyEvent.VK_F5) game.save(game, "Save.tmp");
 			
 		}
 		

@@ -2,6 +2,7 @@ package inventaire;
 
 import acteurs.Joueur;
 import acteurs.Personnage;
+import acteurs.Population;
 import main.Game;
 import plateau.Dalle;
 
@@ -16,7 +17,6 @@ public class SlotButin extends Slot{
 	}
 
 	public void leftClick() {
-		
 		Inventaire inventaireJoueur = this.getGame().getPopulation().getJoueur().getInventaire();
 		inventaireJoueur.add(this.getItem());
 		this.setItem(null);

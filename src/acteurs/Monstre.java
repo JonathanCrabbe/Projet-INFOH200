@@ -9,65 +9,57 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import GUI.ImageContainer;
 import competences.AttaqueSimple;
 import inventaire.Inventaire;
+import items.Fleche;
 import items.Potion;
 import main.Game;
 import main.VisualGameObject;
+import observateur.Observer;
 import plateau.Case;
 
-public class Monstre extends PNJ implements VisualGameObject {
+public class Monstre extends PNJ implements VisualGameObject, Observer {
 	
-	private Random rd = new Random(); //Pour les décisions aléatoires
-	public static final int waitTime = 2000; //Temps entre chaque action (milliseconde)
-	private Thread action;
+	
+	
+	private transient Thread action;
+	private DecisionMonstre decision; 
 
+	
 	public Monstre(int x, int y, Game game) {
 		super(x, y, game);
 		this.force = 5;
+		this.decision = new DecisionMonstre(game, this);
+	}
+	
+	public void render(Graphics g) {
 		
-		try {
-			this.image = ImageIO.read(new File("Images/Monstre.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		if(this.isInFOV()){
+			//Si le PNJ est visible, on le dessine dans le repère du joueur:
+			Personnage joueur = this.game.getPopulation().getPerso(0);
+			
+			//Coordonnées du joueur:
+			int xp = joueur.getX();
+			int yp = joueur.getY();
+			int FOV = Joueur.FOV;			
+			int dim = Case.dim;
+			
+			int xi = dim*(x+FOV-xp);
+			int yi = dim*(y+FOV-yp);
+			
+			//Dessiner dans le repère de la fenêtre
+			g.drawImage(ImageContainer.imageMonstre, xi,yi , dim,dim, null);
+			
+			}
 	}
 
 	
 	public void tick(){
 		
-		
-		//Cherche si le joueur est accessible. Si oui, l'attaquer.
-		boolean tourFini = false;
-		ArrayList<Case> ls = this.getReachableCases();
-		for(Case caseTemp:ls){
-			int xTemp = caseTemp.getX();
-			int yTemp = caseTemp.getY();		
-			
-			if(!this.game.getPopulation().caseIsFree(xTemp, yTemp)){
-				Personnage persoTemp = this.game.getPopulation().getPerso(xTemp, yTemp);
-			
-				if(persoTemp.getEstJoueur()){
-					AttaqueSimple attaque = new AttaqueSimple(this, persoTemp);
-					attaque.run();
-					tourFini = true;
-				}
-			} 
-		}
-		
-		if(! tourFini){
-			//Cherche les cases accessibles et se déplace sur une d'elle choisie aléatoirement.
-			ls = this.getFreeReachableCases();
-			if(ls.size() != 0){		
-				int c = rd.nextInt(ls.size()); //Indice de la case
-				Case caseChoisie =  ls.get(c);
-				if(this.game.getPopulation().caseIsFree(caseChoisie.getX(), caseChoisie.getY())){
-				this.moveTo(caseChoisie);
-				}									
-			}
-		}
-			
+		this.action = new Thread(decision);
+		action.start();
+	
 	}
 
 
@@ -75,7 +67,29 @@ public class Monstre extends PNJ implements VisualGameObject {
 	protected Inventaire construireInventaire() {
 		Inventaire inventaire = new Inventaire(game, this, 5);
 		inventaire.add(new Potion(game, 50));
+		inventaire.add(new Fleche(game));
 		return inventaire;
+	}
+
+
+	
+	public void update() {
+		/*
+		 * Le monstre sait quel le joueur est attaqué
+		 * Il adapte son comportement
+		 * Utilité de l'attribut decision: seul lui est modifié
+		 */
+		this.decision.devientAgressif();
+		
+	}
+	
+	
+	/*
+	 * Getters:
+	 */
+	
+	public Thread getAction(){
+		return this.action;
 	}
 
 	

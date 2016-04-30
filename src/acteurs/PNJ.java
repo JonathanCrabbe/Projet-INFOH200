@@ -18,31 +18,10 @@ public abstract class PNJ extends Personnage implements VisualGameObject {
 		
 	}
 	
-	public void render(Graphics g) {
-		
-		if(isInFOV()){
-			//Si le PNJ est visible, on le dessine dans le repère du joueur:
-			Personnage joueur = this.game.getPopulation().getPerso(0);
-			
-			//Coordonnées du joueur:
-			int xp = joueur.getX();
-			int yp = joueur.getY();
-			int FOV = Joueur.FOV;			
-			int dim = Case.dim;
-			
-			int xi = dim*(x+FOV-xp);
-			int yi = dim*(y+FOV-yp);
-			
-			//Dessiner dans le repère de la fenêtre
-			g.drawImage(image, xi,yi , dim,dim, null);
-			//g.fillRect(dim*(x+FOV-xp), dim*(y+FOV-yp), dim, dim);
-			}
-			
-
-	}
+	
 	
 	//Renvoie True si le PNJ apparaît dans le champ de vision du joueur
-	private boolean isInFOV(){
+	public boolean isInFOV(){
 		Personnage joueur = this.game.getPopulation().getPerso(0);
 		//Coordonnées du joueur:
 		int xp = joueur.getX();

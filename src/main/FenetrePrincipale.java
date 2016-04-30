@@ -13,11 +13,12 @@ import acteurs.Personnage;
 
 public class FenetrePrincipale extends Canvas {
 
-	private static final long serialVersionUID = -8255319694373975038L;
+	
+	private JFrame frame;
 	
 	public FenetrePrincipale(int width, int height, String title, Game game){
 		
-		JFrame frame = new JFrame(title);
+		frame = new JFrame(title);
 		
 		// Taille de la fenêtre:
 		
@@ -36,6 +37,11 @@ public class FenetrePrincipale extends Canvas {
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		game.start();
+	}
+	
+	public void close(){
+		frame.setVisible(false);
+		frame.dispose();
 	}
 
 }

@@ -3,6 +3,7 @@ package plateau;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.awt.Image;
+import java.io.Serializable;
 
 import javax.swing.JPanel;
 
@@ -11,11 +12,12 @@ import acteurs.Personnage;
 import generateurDonjon.Topologie;
 import main.Game;
 import main.VisualGameObject;
+import observateur.Observer;
 
-public class Plateau extends JPanel implements VisualGameObject{
+public class Plateau extends JPanel implements  Serializable{
 	
 	private int taille;
-	private ArrayList<ArrayList<Case>> grille = new ArrayList<ArrayList<Case>>();
+	private ArrayList<Case> grille = new ArrayList<Case>();
 	private Game game;
 	
 	public Plateau(int taille, Game game){
@@ -24,7 +26,6 @@ public class Plateau extends JPanel implements VisualGameObject{
 		this.requestFocusInWindow();
 		Topologie topologie = new Topologie(taille);
 		for(int i = 0; i < taille ; i++){
-			grille.add(new ArrayList<Case>());
 			for(int j = 0; j < taille; j++){
 				if(topologie.estSalle(i, j) && i != 0 && j != 0 && i != taille-1 && j != taille-1){
 					//On ne place des dalles selon la topologie générée et pas sur les bords du donjon
@@ -41,39 +42,10 @@ public class Plateau extends JPanel implements VisualGameObject{
 	 * Actualisation:
 	 */
 	
-	//Ce qu'il se passe à chaque ittération de la Game Loop
-	public void tick(){
-		for(int i = 0; i < taille ; i++){
-			for(int j = 0; j < taille; j++){
-				Case caseTemp = grille.get(i).get(j);
-				caseTemp.tick();
-				//On actualise chaque case
-			}
-		}			
-	}
-		
 	
-	//Permets d'avoir un rendu global de la carte
-	public void renderGlobal(Graphics g) { 
-		if(grille == null){
-		}else{
-			for(int i = 0; i < taille; i++){
-				for(int j = 0; j < taille; j++){
-					Case caseTemp = grille.get(i).get(j);
-					caseTemp.render(g);
-				}
-				
-			}
-		}		
-     }
 	
-	// N'affiche que les dalles
-	public void renderDalles(Graphics g) { 
-		ArrayList<Case> dalles	= getDalles();
-		for(Case caseTemp:dalles){
-			caseTemp.render(g);
-		}
-     }
+	
+	
 	
 	//Cherche chacune des cases visibles par le joueur et la dessine
 	public void renderLocal(Graphics g, int x, int y) { 
@@ -89,7 +61,7 @@ public class Plateau extends JPanel implements VisualGameObject{
 					
 			for(int i = xinf; i < xsup; i++){
 				for(int j = yinf; j < ysup; j++){
-					Case caseTemp = grille.get(i).get(j);
+					Case caseTemp = getCase(i,j);
 					int dim = Case.dim;
 					caseTemp.render(g, (i+FOV-x), (j+FOV-y));
 					
@@ -106,7 +78,7 @@ public class Plateau extends JPanel implements VisualGameObject{
 	
 	//Ajoute une case à la ArrayList
 	private void addCase(Case c, int x, int y){
-		this.grille.get(x).add(y, c);
+		this.grille.add(y, c);
 	}
 	
 	
@@ -118,15 +90,13 @@ public class Plateau extends JPanel implements VisualGameObject{
 	//Donne une liste des Dalles
 	public ArrayList<Case> getDalles(){		
 		ArrayList<Case> ls = new ArrayList<Case>();
-		for(int i = 0; i < taille; i++ ){
-			ArrayList<Case> listeTemp = grille.get(i);
-			for(int j = 0; j < taille; j++){
-				Case caseTemp = listeTemp.get(j);
-				if(caseTemp.getCaseType() == 0){
+		
+		for(Case caseTemp:grille){		
+			if(caseTemp.getCaseType() == 0){
 					ls.add(caseTemp);
 				}
-			}
 		}
+		
 		return ls;
 	}
 	//Renvoie une liste des Dalles non occupées par des personnages
@@ -146,20 +116,28 @@ public class Plateau extends JPanel implements VisualGameObject{
 	}
 	
 	
-	public Case getCase(int k, int l){
-		Case res = this.grille.get(k).get(l);
+	public Case getCase(int x, int y){
+		Case res = null;
+		for(Case caseTemp:grille){
+			if(caseTemp.getX() == x && caseTemp.getY() == y){
+				res = caseTemp;
+				break;
+			}
+		}	
 		return res;
+	}
+	
+	
+	public boolean estDalle(int x, int y){
+		return (this.getCase(x, y).getCaseType() == 0);
 	}
 	
 	public int getTaille(){
 		return this.taille;
 	}
 
-	@Override
-	public void render(Graphics g) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+
 	
 	
 	

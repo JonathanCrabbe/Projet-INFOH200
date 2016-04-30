@@ -1,26 +1,26 @@
 package acteurs;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
 import main.Game;
 import main.VisualGameObject;
+import observateur.Observer;
 import plateau.Case;
 import plateau.Dalle;
 
-public class Population implements VisualGameObject{
+public class Population implements VisualGameObject, Serializable{
 	
 	private ArrayList<Personnage> personnages = new ArrayList<Personnage>();
 	private Game game;
 	private int nombreMonstres;
+	private Random rd = new Random(); //Pour avoir des attributs de personnages aléatoires
 	
 	public Population(int nombreMonstres,Game game){
 		this.game = game;
 		this.nombreMonstres = nombreMonstres;
-		
-		Random rd = new Random(); //Pour avoir des attributs de personnages aléatoires
-		
 		
 		//Création du joueur:
 		ArrayList<Case> freeDalles = game.getPlateau().getDalles();
@@ -29,7 +29,20 @@ public class Population implements VisualGameObject{
 		int spawnY = spawn.getY();
 		freeDalles.remove(spawn); //le joueur occupe maintenant cette dalle ==> elle n'est plus libre
 		
-		addPersonnage(new Joueur(spawnX,spawnY, 1, game)); //Le joueur est toujours l'élément 0 de la liste
+		String classeJoueur = this.game.getClasseJoueur();
+		
+		Joueur player = null;
+		
+		switch(classeJoueur){
+			case "Guerrier" : player = new Guerrier(spawnX,spawnY, 1, game);
+							  break;
+			case "Mage" 	: player = new Mage(spawnX,spawnY, 1, game);
+							  break;
+			case "Archer"   : player = new Archer(spawnX,spawnY, 1, game);
+			  				  break;				  
+		}
+			
+		addPersonnage(player); //Le joueur est toujours l'élément 0 de la liste
 		
 		try{
 			//Création des monstres:
@@ -39,6 +52,7 @@ public class Population implements VisualGameObject{
 				int spawnYTemp = spawnTemp.getY();
 				Monstre monstreTemp = new Monstre(spawnXTemp, spawnYTemp, game);
 				personnages.add(monstreTemp);
+				player.attach(monstreTemp);
 				freeDalles.remove(spawnTemp); //La case est miantenant occupée
 				}
 			}
@@ -60,10 +74,11 @@ public class Population implements VisualGameObject{
 			if(persoTemp.getHP() <= 0) {
 				persoTemp.dropInventory(); //Fait tomber le butin par terre
 				personnages.remove(persoTemp);
+				this.game.setScore(this.game.getScore() + 5); //Augmente le score du joueur
 			}
 			
 		}
-		
+		if(this.personnages.size() == 1) this.game.relaunch(); //Si seul le joueur est en vie, on relanceq
 	}
 	
 	public void render(Graphics g){
@@ -86,7 +101,7 @@ public class Population implements VisualGameObject{
 	
 	
 	//Renvoie True si la case en (x,y) n'est occupée par aucun personnage
-	public boolean caseIsFree(int x, int y){
+	public synchronized boolean caseIsFree(int x, int y){
 		boolean ans = true;
 		for(Personnage persoTemp:this.personnages){
 			if(persoTemp.getX() == x && persoTemp.getY() == y){
@@ -95,6 +110,38 @@ public class Population implements VisualGameObject{
 		}
 		return ans;
 		
+	}
+	
+	public void relaunch(){
+		
+		/*
+		 * Récréer une population (sans changer le joueur) 
+		 */
+		
+		ArrayList<Case> freeDalles = game.getPlateau().getDalles();
+		Case spawn = freeDalles.get(rd.nextInt(freeDalles.size())); //Case sur laquelle le joueur apparaîtra
+		int spawnX = spawn.getX();
+		int spawnY = spawn.getY();
+		freeDalles.remove(spawn); //le joueur occupe maintenant cette dalle ==> elle n'est plus libre
+		Joueur player = (Joueur)this.getJoueur();
+		player.setX(spawnX);
+		player.setY(spawnY);
+		
+		try{
+			//Création des monstres:
+			for(int i = 0; i < nombreMonstres; i++){
+				Case spawnTemp = freeDalles.get(rd.nextInt(freeDalles.size())); //Case sur laquelle le monstre apparaîtra
+				int spawnXTemp = spawnTemp.getX();
+				int spawnYTemp = spawnTemp.getY();
+				Monstre monstreTemp = new Monstre(spawnXTemp, spawnYTemp, game);
+				personnages.add(monstreTemp);
+				player.attach(monstreTemp);
+				freeDalles.remove(spawnTemp); //La case est miantenant occupée
+				}
+			}
+			catch(ArrayIndexOutOfBoundsException e){
+				System.out.println("Erreur: pas assez de place pour placer les ennemis!");		
+			}
 	}
 	
 	// Getters:
@@ -111,8 +158,8 @@ public class Population implements VisualGameObject{
 		return personnages.get(i);
 	}
 	
-	//Renvoie le personnage ayant les coordonnées (x,y)
-	public Personnage getPerso(int x, int y){
+	//Renvoie le personzznage ayant les coordonnées (x,y)
+	public synchronized Personnage getPerso(int x, int y){
 		Personnage perso = null;
 		for(Personnage persoTemp:personnages){
 			if(persoTemp.getX() == x && persoTemp.getY() == y){
@@ -134,6 +181,6 @@ public class Population implements VisualGameObject{
 		}
 		return ans;
 	}
-	
 
+	
 }

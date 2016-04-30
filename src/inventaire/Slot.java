@@ -3,6 +3,7 @@ package inventaire;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 import acteurs.Joueur;
 import items.Item;
@@ -10,12 +11,12 @@ import main.Game;
 import main.VisualGameObject;
 import plateau.Dalle;
 
-public abstract class Slot extends Rectangle implements VisualGameObject { 
+public abstract class Slot extends Rectangle implements VisualGameObject, Serializable { 
 	/*
 	 *  Cette classe gère les slots d'inventaire et contiennent un objet.
 	 *  Hérite de Rectangle pour l'interraction souris.
 	 */
-	private Game game;
+	private  Game game;
 	private Inventaire inventaire;
 	private Item item;
 	private int x,y; //Position sur la grille 

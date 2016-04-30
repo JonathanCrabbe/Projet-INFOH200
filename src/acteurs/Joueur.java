@@ -6,20 +6,24 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.*;
 
+import GUI.ImageContainer;
 import inventaire.Inventaire;
 import items.Potion;
 import main.Game;
 import main.VisualGameObject;
-
+import observateur.Observer;
+import observateur.Subject;
 import plateau.Case;
 
 
-public class Joueur extends Personnage implements VisualGameObject {
+public class Joueur extends Personnage implements VisualGameObject , Subject {
 	
 	public static int FOV = 7;
+	private ArrayList<Observer> observateurs = new ArrayList<Observer>();
 
 	
 
@@ -27,16 +31,7 @@ public class Joueur extends Personnage implements VisualGameObject {
 		super(x, y, game);
 		this.estJoueur = true;
 		this.inventaire = construireInventaire();
-		
-
-		
-		try {
-			this.image = ImageIO.read(new File("Images/Joueur.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		
+	
 	}
 	
 
@@ -53,11 +48,13 @@ public class Joueur extends Personnage implements VisualGameObject {
 		}
 	}
 	
-	public void getDammage(int d){
+	public synchronized void getDammage(int d){
 		this.HP -= d;
 		if(HP <= 0){
 			this.game.stop();
 		}
+		this.notifyObserver(); 
+		//Avertir les observateurs que le joueur est attaqué
 	}
 	
 	public void render(Graphics g){
@@ -66,7 +63,7 @@ public class Joueur extends Personnage implements VisualGameObject {
 		int xp = (FOV)*dim ;
 		int yp = (FOV)*dim;	
 		
-		g.drawImage(image,xp, yp, dim,dim, null);
+		g.drawImage(ImageContainer.imageJoueur,xp, yp, dim,dim, null);
 		
 	}
 
@@ -78,6 +75,20 @@ public class Joueur extends Personnage implements VisualGameObject {
 		inventaire.add(new Potion(this.game, 50));
 		inventaire.add(new Potion(this.game, 50));
 		return inventaire;
+	}
+
+
+
+	public void attach(Observer o) {
+		this.observateurs.add(o);
+		
+	}
+
+	public void notifyObserver() {
+		for(Observer o:observateurs){
+			o.update();
+		}
+		
 	}
 
 

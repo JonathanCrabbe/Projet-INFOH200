@@ -1,15 +1,15 @@
 package items;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 import acteurs.Personnage;
 import main.Game;
 
-public abstract class Item {
+public abstract class Item implements Serializable{
 	
 	private Game game;
 	protected boolean isConsommable;
-	protected BufferedImage itemImage;
 	protected String itemName;
 	
 	public Item(Game game){
@@ -27,8 +27,7 @@ public abstract class Item {
 		return this.isConsommable;
 	}
 	
-	public BufferedImage getImage(){
-		return this.itemImage;
-	}
+	public abstract BufferedImage getImage();
+		
 }
 
