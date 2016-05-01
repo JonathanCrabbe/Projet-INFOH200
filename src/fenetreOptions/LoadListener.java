@@ -16,11 +16,11 @@ public class LoadListener implements ActionListener {
 	}
 
 
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent arg0) { //Créer un jeu basé sur la sauvegarde stockée de "Save.tmp"
 		
 		dialog.dispose();
 		game = game.load("Save.tmp");	
-		game.loadGame();
+		game.loadGame(); //Pour ouvrir la fenêtre associée au jeu chargé
 		
 
 	}

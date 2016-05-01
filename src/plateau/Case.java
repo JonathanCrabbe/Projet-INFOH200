@@ -18,17 +18,16 @@ import observateur.Observer;
 public abstract class Case implements  Observer, Serializable{
 	
 	
-	protected int x;
-	protected int y;
-	protected int caseType;
-	private Inventaire butin;
-	
-	private boolean lieuAOE;
+	private int x, y;
+	protected int caseType; //Type de case (mur, dalle)
+	private Inventaire butin; //Loot contenu sur la case
+	private boolean lieuAOE; //True si la case subit une AOE
 
-
+	public static int dim = 50; //Dimension des cases
 	
-	
-	public static int dim = 50;
+	/*
+	 * Constructeur et représentation:
+	 */
 
 	public Case(int x, int y, int caseType){
 		this.x = x;
@@ -63,7 +62,7 @@ public abstract class Case implements  Observer, Serializable{
 		return this.lieuAOE;
 	}
 	
-	public double getDist(Case autreCase){
+	public double getDist(Case autreCase){ 
 		/*
 		 * Renvoie la distance entre cette
 		 * case et l'autre case (distance Manhattan)
@@ -91,9 +90,13 @@ public abstract class Case implements  Observer, Serializable{
 			butin.changeVisible();
 		}
 	}
+	
+	/*
+	 * Design Pattern Observer (la Case observe les AOE)
+	 */
 
-	public synchronized void update(){
-		//Switch l'état
+	public synchronized void update(){ //Switch l'état
+		
 		this.lieuAOE = !this.lieuAOE;
 	}
 	

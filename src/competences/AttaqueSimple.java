@@ -6,8 +6,11 @@ public class AttaqueSimple implements Runnable {
 	
 	private Personnage attaquant;
 	private Personnage cible;
-	private int dmg;
+	private int dmg; //Dégats subits
 	
+	/*
+	 * Constructeur et exécution:
+	 */
 	
 	public AttaqueSimple(Personnage attaquant, Personnage cible){
 		this.attaquant = attaquant;
@@ -17,11 +20,8 @@ public class AttaqueSimple implements Runnable {
 	
 	
 	
-	public void run() {
-		
+	public void run() {	
 		cible.getDammage(dmg);
-		
-		//attaquant.attaqueCoord(xTarget, yTarget, dmg);
 	}
 
 }

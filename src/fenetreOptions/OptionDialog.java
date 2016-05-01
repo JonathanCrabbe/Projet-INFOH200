@@ -19,10 +19,9 @@ import javax.swing.JTextField;
 import main.Game;
 
 public class OptionDialog extends JDialog {
-	private boolean sendData;
-	private JLabel nomLabel, tailleLabel;
-	private JRadioButton tranche1, tranche2, tranche3;
-	private JTextField tailleField, nomField;
+	private JLabel nomLabel, tailleLabel; 
+	private JRadioButton tranche1, tranche2, tranche3; //Boutons pour gérer le choix de la classe
+	private JTextField tailleField, nomField; //Champs (nom du joeur et taille de la map)
 	private Game game;
 	
 	
@@ -41,7 +40,7 @@ public class OptionDialog extends JDialog {
 
 	private void initComponent(){
 
-		//Personnage 
+		//Classes: 
 		JPanel panPerso = new JPanel();
 		panPerso.setBackground(Color.white);
 		panPerso.setBorder(BorderFactory.createTitledBorder("Choix de la classe du personnage"));
@@ -60,7 +59,7 @@ public class OptionDialog extends JDialog {
 		panPerso.add(tranche2);
 		panPerso.add(tranche3);
     
-		//La taille
+		//Champs de texte:
 		JPanel panTexte = new JPanel();
 		panTexte.setBackground(Color.white);
 		panTexte.setPreferredSize(new Dimension(400, 125));
@@ -81,8 +80,10 @@ public class OptionDialog extends JDialog {
 		content.setBackground(Color.white);
 		content.add(panPerso);
 		content.add(panTexte);
+		
+		
 
-
+		//Validation/annulation:
 		JPanel control = new JPanel();
 		JButton okBouton = new JButton("Nouvelle Partie");
 		JButton loadBouton = new JButton("Charger Partie");

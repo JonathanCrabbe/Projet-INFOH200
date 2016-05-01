@@ -17,7 +17,7 @@ public class Fleche extends Consommable {
 	
 	public void useOn(Personnage perso) {
 		if(perso.getClass().getName() == "acteurs.Archer"){
-			((Archer)perso).incrementFleche();
+			((Archer)perso).incrementFleche(); //Casting car par le if, on est sûr que perso est un Archer
 		}
 
 	}

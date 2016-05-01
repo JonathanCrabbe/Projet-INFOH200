@@ -62,7 +62,7 @@ public class KeyInput extends KeyAdapter {
 		}
 		
 	}
-	public void keyReleased(KeyEvent e){
+	public void keyReleased(KeyEvent e){ //Pour pouvoir avoir un mode de pression continue
 		int key = e.getKeyCode();
 		
 		for(int i = 0 ; i < population.getSize() ; i++ ){

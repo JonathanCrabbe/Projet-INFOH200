@@ -10,7 +10,7 @@ import items.Item;
 import main.Game;
 import main.VisualGameObject;
 
-public  class Inventaire implements VisualGameObject, Serializable {
+public  class Inventaire implements  Serializable {
 	protected  Game game;
 	protected Personnage porteur; //Personnage qui porte cet inventaire
 	private int capacite;  
@@ -19,6 +19,10 @@ public  class Inventaire implements VisualGameObject, Serializable {
 	private final int dim = Joueur.FOV;
 	private boolean isVisible;
 	
+	
+	/*
+	 * Constructeur et actualisation:
+	 */
 	public Inventaire(Game game, Personnage porteur, int capacite){
 		this.game = game;
 		this.porteur = porteur;
@@ -34,7 +38,7 @@ public  class Inventaire implements VisualGameObject, Serializable {
 			//Différencier un joueur d'un monstre:
 			
 			if(porteur.getEstJoueur()){
-				slots.add(new SlotJoueur(x,y, game, this));
+				slots.add(new SlotJoueur(x,y,game, this));
 			}
 			else{
 				slots.add(new SlotButin(x,y,game,this));
@@ -46,12 +50,7 @@ public  class Inventaire implements VisualGameObject, Serializable {
 		
 	}
 	
-	
-	
-	public void tick() {
-		
-		
-	}
+
 
 	
 	public void render(Graphics g) {
@@ -65,17 +64,16 @@ public  class Inventaire implements VisualGameObject, Serializable {
 	}
 	
 	
+	/*
+	 * Manipulation de l'inventaire:
+	 */
 	
-	//Ajoute item à l'inventaire
-	public void add(Item item){
+	public void add(Item item){//Ajoute item à l'inventaire
 		
-		//Il ne faut pas que la taille maximale soit surpassée!
 		
-		boolean itemAdded = false;
-		for(Slot slotTemp:slots){
+		for(Slot slotTemp:slots){ //Il ne faut pas que la taille maximale soit surpassée!
 			if(slotTemp.isEmpty()){
 				slotTemp.setItem(item);
-				itemAdded = true;
 				break;
 			}
 		}
@@ -83,15 +81,15 @@ public  class Inventaire implements VisualGameObject, Serializable {
 	}
 	
 
-	public void useItem(int i){
+	public void useItem(int i){ //Utiliser le ième objet dans slots
 		Item itemTemp = this.slots.get(i).getItem();
-		if(itemTemp != null){
+		if(itemTemp != null){ //Vérifier qu'il y a un porteur
 			itemTemp.useOn(porteur);
 		}
 	}
 	
-	//Surcharge de méthode:
-	public void useItem(int x, int y){
+	
+	public void useItem(int x, int y){ //Surcharge de méthode, accès par la grille
 		Item itemTemp = getSlot(x, y).getItem();
 		if(itemTemp != null){
 			itemTemp.useOn(porteur);
@@ -136,7 +134,7 @@ public  class Inventaire implements VisualGameObject, Serializable {
 	 * Setters:
 	 */
 	
-	public void changeVisible(){
+	public void changeVisible(){ //Utile pour le KeyListener de la touche "i"
 		
 		this.isVisible = !isVisible;
 	}

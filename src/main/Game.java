@@ -29,8 +29,8 @@ public class Game extends Canvas implements Runnable, Serializable{
 
 	private static final long serialVersionUID = 314;
 	
-	private transient Thread thread;
-	private boolean running = false;
+	private transient Thread thread; //Le thread qui caractérise le jeu
+	private boolean running = false; //Pour vérifier si le jeu est en cours
 	private FenetrePrincipale fenetreJeu;
 	
 	public static final int WIDTH = Case.dim * (2*Joueur.FOV+1);
@@ -42,14 +42,17 @@ public class Game extends Canvas implements Runnable, Serializable{
 	private TopBar topbar;
 	
 	private  int taillePlateau = 100;
-	private final int nombreMonstres = 20;
+	private final int nombreMonstres = 10;
 	
 	private String classeJoueur;
 	private String nomJoueur;
 	
 	private int score = 0;
-
 	
+
+	/*
+	 * Construction et exécution
+	 */
 	
 	public Game(){
 		
@@ -57,26 +60,24 @@ public class Game extends Canvas implements Runnable, Serializable{
 			
 	}
 	
-	public void newGame(){
+	public void newGame(){ //Création de tous les attributs pour une nouvelle partie
 		plateau = new Plateau(taillePlateau, this);
 		population = new Population(nombreMonstres,this);
 		topbar = new TopBar(this);
 		
-		this.addKeyListener(new KeyInput(this, population));
+		this.addKeyListener(new KeyInput(this, population)); //Commandes par clavier du personnage
 		fenetreJeu = new FenetrePrincipale(WIDTH, HEIGHT, "Rogue Heritage", this);
 	}
 	
-	public void loadGame(){
+	public void loadGame(){ //Mettre tout en place pour charger la partie
 		
-		/*
-		 * Listeners:
-		 */
+		//Remettre les listener qui en place:
 		this.addKeyListener(new KeyInput(this, population));
-		for(Personnage persoTemp:population.getPersonnages()){
+		for(Personnage persoTemp:population.getPersonnages()){ //Butin sur les monstres
 			Inventaire inventaireTemp = persoTemp.getInventaire();
 			this.addMouseListener(new InventaireMouse(inventaireTemp));
 		}
-		for(Case caseTemp:plateau.getDalles()){
+		for(Case caseTemp:plateau.getDalles()){ //Butin au sol
 			Inventaire inventaireTemp = caseTemp.getButin();
 			if(inventaireTemp != null) this.addMouseListener(new InventaireMouse(inventaireTemp));
 		}
@@ -84,24 +85,23 @@ public class Game extends Canvas implements Runnable, Serializable{
 	}
 
 	
-	public synchronized void start(){
+	public synchronized void start(){  //Démarer le thread
 		thread = new Thread(this);
 		thread.start();
 		running = true;
 		
 	}
 	
-	public synchronized void stop(){
+	public synchronized void stop(){ //Arrêt du thread et affichage de l'écran Game Over
 		
 		try{
 			
 			
 			running = false;
 			
-			this.saveScore("Scores.csv");
-			String bestScore = this.readBestScore("Scores.csv");
+			this.saveScore("Scores.csv"); //Sauver le score de cette partie
+			String bestScore = this.readBestScore("Scores.csv"); //Récupérer le reccord 
 			
-			System.out.println("Coucou");
 			BufferStrategy bs = this.getBufferStrategy();
 			Graphics g = bs.getDrawGraphics();
 			g.setColor(Color.BLACK);
@@ -136,7 +136,7 @@ public class Game extends Canvas implements Runnable, Serializable{
 		*/
 		
 		long lastTime = System.nanoTime();
-		double amountOfTicks = 5.0;
+		double amountOfTicks = 7.0; //Fréquence d'actualisation
 		double ns = 1000000000/ amountOfTicks; //Période (ns)
 		double delta = 0;
 		long timer = System.currentTimeMillis();
@@ -170,13 +170,12 @@ public class Game extends Canvas implements Runnable, Serializable{
 		
 	}
 	
-	private synchronized  void tick(){
-		//Actualisation population et plateau et GUI:
+	private synchronized  void tick(){ //Actualisation population et plateau et GUI:	
 		population.tick();
 		topbar.tick();
 	}
 	
-	private synchronized void render(){
+	private synchronized void render(){ //Représentation de tous les éléments à l'écran
 		BufferStrategy bs = this.getBufferStrategy();
 		if(bs == null){
 			this.createBufferStrategy(3);
@@ -195,28 +194,27 @@ public class Game extends Canvas implements Runnable, Serializable{
 		player.getInventaire().render(g);
 		
 		//Affichage du contenu des cases loot:
+		
 		for(Case caseTemp:plateau.getDalles()){
 			Inventaire butin = caseTemp.getButin();
 			if(butin != null && player.getCase() == caseTemp){
 				butin.setVisible(true);
 				butin.render(g);	
 			}
-			else if(butin != null && butin.getIsVisible()){
-				//Si le joueur n'est pas sur la case:	
+			else if(butin != null && butin.getIsVisible()){ //Si le joueur n'est pas sur la case:	
 				butin.setVisible(false);
 			}
 		}
 		
 		
 		g.dispose();
-		if(running) bs.show();  //Latence entre l'appel de render et actualisation de running
+		if(running) bs.show();  //Vérification car latence entre l'appel de render et actualisation de running
 	}
 	
 	
-	public void relaunch(){
-		/*
-		 * Recréer une map et des ennemis
-		 */
+	public void relaunch(){ //Méthode appellée quand tous les ennemis ont été éliminés
+		
+		 //Recréer une map et des ennemis		 
 		thread.interrupt();
 		plateau = new Plateau(taillePlateau, this);		
 		this.population.relaunch();
@@ -249,6 +247,10 @@ public class Game extends Canvas implements Runnable, Serializable{
 		return nomJoueur;
 	}
 	
+	public int getTaillePlateau(){
+		return this.taillePlateau;
+	}
+	
 	/*
 	 * Setters:
 	 */
@@ -271,14 +273,14 @@ public class Game extends Canvas implements Runnable, Serializable{
 	}
 	
 	public void setNomJoueur(String nomJoueur) {
-		this.nomJoueur = nomJoueur;
+		this.nomJoueur = nomJoueur.replace(": ", ""); //Empêcher d'interférer avec le format de l'entrée
 	}
 	
 	/*
 	 * Persistance:
 	 */
 	
-	public void save(Game game, String fileName){
+	public void save(Game game, String fileName){ //Sauvegarde de l'état du jeu
 		try
 	      {
 	         FileOutputStream fileOut =  new FileOutputStream(fileName);
@@ -292,7 +294,7 @@ public class Game extends Canvas implements Runnable, Serializable{
 	      }
 	}
 	
-	public Game load(String fileName){
+	public Game load(String fileName){ //Chargement de l'état d'un jeu
 		Game game = new Game();
 		 try
 	      {
@@ -312,10 +314,10 @@ public class Game extends Canvas implements Runnable, Serializable{
 		 return game;
 	}
 	
-	public void saveScore(String fileName){
+	public void saveScore(String fileName){ //Sauvegarde du score
 		
 		try {
-			
+			//Format de l'entrée: Nom: Score
 			BufferedWriter file = new BufferedWriter(
 					new FileWriter(fileName, true));
 			String data = nomJoueur + ": ";
@@ -328,7 +330,7 @@ public class Game extends Canvas implements Runnable, Serializable{
 		}
 	}
 	
-	public String readBestScore(String fileName){
+	public String readBestScore(String fileName){ //Renvoie le meilleur score enregistré
 		
 		String ans = new String();
 		try {
@@ -340,11 +342,9 @@ public class Game extends Canvas implements Runnable, Serializable{
 			String dat = line.replace("\n", "");
 			ans = dat;
 			while(line != null){
-				
-				//Vérification de la supériorité de l'entrée testée:
 				dat = line.replace("\n", "");
 				String[] values = dat.split(": ");
-				if(Integer.valueOf(ans.split(": ")[1]) < 
+				if(Integer.valueOf(ans.split(": ")[1]) <  //Vérification de la supériorité de l'entrée testée:
 						Integer.valueOf(values[1])){
 					ans = dat;
 				}

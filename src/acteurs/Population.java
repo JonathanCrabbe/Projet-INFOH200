@@ -13,10 +13,15 @@ import plateau.Dalle;
 
 public class Population implements VisualGameObject, Serializable{
 	
-	private ArrayList<Personnage> personnages = new ArrayList<Personnage>();
+	private ArrayList<Personnage> personnages = new ArrayList<Personnage>(); //Liste des personnages
 	private Game game;
-	private int nombreMonstres;
+	private int nombreMonstres; //Nombre de monstres dans la liste
 	private Random rd = new Random(); //Pour avoir des attributs de personnages aléatoires
+	
+	
+	/*
+	 * Constructeur et actualisaation:
+	 */
 	
 	public Population(int nombreMonstres,Game game){
 		this.game = game;
@@ -29,8 +34,7 @@ public class Population implements VisualGameObject, Serializable{
 		int spawnY = spawn.getY();
 		freeDalles.remove(spawn); //le joueur occupe maintenant cette dalle ==> elle n'est plus libre
 		
-		String classeJoueur = this.game.getClasseJoueur();
-		
+		String classeJoueur = this.game.getClasseJoueur(); //String contenant le nom de la classe	
 		Joueur player = null;
 		
 		switch(classeJoueur){
@@ -52,8 +56,8 @@ public class Population implements VisualGameObject, Serializable{
 				int spawnYTemp = spawnTemp.getY();
 				Monstre monstreTemp = new Monstre(spawnXTemp, spawnYTemp, game);
 				personnages.add(monstreTemp);
-				player.attach(monstreTemp);
-				freeDalles.remove(spawnTemp); //La case est miantenant occupée
+				player.attach(monstreTemp); //Pour le design pattern Observer (le joueur est observé par les monstres)
+				freeDalles.remove(spawnTemp); //La case est maintenant occupée
 				}
 			}
 			catch(ArrayIndexOutOfBoundsException e){
@@ -78,7 +82,7 @@ public class Population implements VisualGameObject, Serializable{
 			}
 			
 		}
-		if(this.personnages.size() == 1) this.game.relaunch(); //Si seul le joueur est en vie, on relanceq
+		if(this.personnages.size() == 1) this.game.relaunch(); //Si seul le joueur est en vie, on relance une map
 	}
 	
 	public void render(Graphics g){
@@ -90,15 +94,6 @@ public class Population implements VisualGameObject, Serializable{
 		}
 		
 	}
-	
-	private void addPersonnage(Personnage perso){
-		this.personnages.add(perso);
-	}
-	
-	private void removePersonnage(Personnage perso){
-		this.personnages.remove(perso);
-	}
-	
 	
 	//Renvoie True si la case en (x,y) n'est occupée par aucun personnage
 	public synchronized boolean caseIsFree(int x, int y){
@@ -158,8 +153,8 @@ public class Population implements VisualGameObject, Serializable{
 		return personnages.get(i);
 	}
 	
-	//Renvoie le personzznage ayant les coordonnées (x,y)
-	public synchronized Personnage getPerso(int x, int y){
+	
+	public synchronized Personnage getPerso(int x, int y){ //Renvoie le personzznage ayant les coordonnées (x,y)
 		Personnage perso = null;
 		for(Personnage persoTemp:personnages){
 			if(persoTemp.getX() == x && persoTemp.getY() == y){
@@ -173,13 +168,28 @@ public class Population implements VisualGameObject, Serializable{
 		return getPerso(0);
 	}
 	
-	//Renvoie true si le joueur est en vie
-	public boolean playerIsAlive(){
+	
+	public boolean playerIsAlive(){ //Renvoie true si le joueur est en vie
 		boolean ans = false;
-		for(Personnage persoTemp:personnages){
+		for(Personnage persoTemp:personnages){ 
 			if(persoTemp.getEstJoueur()) ans = true;
 		}
 		return ans;
+	}
+	
+	/*
+	 * 	Manipulation de la liste:
+	 */
+
+
+	private void addPersonnage(Personnage perso){
+		this.personnages.add(perso);
+	}
+
+
+
+	private void removePersonnage(Personnage perso){
+		this.personnages.remove(perso);
 	}
 
 	

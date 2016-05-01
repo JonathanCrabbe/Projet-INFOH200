@@ -8,9 +8,13 @@ public class RegenMana implements Runnable, Serializable {
 	
 	private Mage mage;
 	private transient Thread thread;
-	private final int waitTime = 1000;
+	private final int waitTime = 1000;//Temps d'attente du thread
+	
+	/*
+	 * Constructeur et exécution
+	 */
 
-
+	
 	public RegenMana(Mage mage) {
 		this.mage = mage;
 		this.start();
@@ -20,7 +24,7 @@ public class RegenMana implements Runnable, Serializable {
 		while(true){	
 			try {
 				mage.setMana(mage.getMana() + 5);
-				thread.sleep(waitTime);
+				thread.sleep(waitTime); //Pour que le regain de manaa ne soit pas instantanné 
 			} catch (InterruptedException e) {}
 		}
 	}
@@ -31,7 +35,7 @@ public class RegenMana implements Runnable, Serializable {
 	}
 	
 	public boolean getIsRunning(){
-		return !( this.thread == null);
+		return !( this.thread == null);  //Utile pour le chargement de partie (le thread n'est pas sérializé)
 	}
 	
 	

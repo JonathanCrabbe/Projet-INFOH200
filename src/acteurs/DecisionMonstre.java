@@ -15,6 +15,10 @@ public class DecisionMonstre implements Runnable, Serializable {
 	private Random rd = new Random();
 	private boolean agressif;
 	
+	/*
+	 * Constructeur et exécution
+	 */
+	
 
 	public DecisionMonstre(Game game, Monstre monstre) {
 		this.game = game;
@@ -33,9 +37,9 @@ public class DecisionMonstre implements Runnable, Serializable {
 			for(Case caseTemp:ls){
 				int xTemp = caseTemp.getX();
 				int yTemp = caseTemp.getY();				
-				if(! this.game.getPopulation().caseIsFree(xTemp, yTemp)){
+				if(! this.game.getPopulation().caseIsFree(xTemp, yTemp)){ //Si la case est occupée
 					Personnage persoTemp = this.game.getPopulation().getPerso(xTemp, yTemp);
-					if(persoTemp.getEstJoueur()){
+					if(persoTemp.getEstJoueur()){ //Si la case est occupée par le joueur
 						AttaqueSimple attaque = new AttaqueSimple(this.monstre, persoTemp);
 						attaque.run();
 						tourFini = true;
@@ -43,12 +47,12 @@ public class DecisionMonstre implements Runnable, Serializable {
 				} 
 			}
 				
-			if(! tourFini){
+			if(! tourFini){ //Si le monstre n'a pas attaqué, il se déplace (différement selon son agressivité)
 					Case caseChoisie = null;
 					if(!agressif) {caseChoisie = choixRand(ls);}
 					else	 {caseChoisie = choixAgressif(ls);}	
 				
-					if(this.game.getPopulation().caseIsFree(caseChoisie.getX(), caseChoisie.getY())){
+					if(this.game.getPopulation().caseIsFree(caseChoisie.getX(), caseChoisie.getY())){ //On vérifie que la case est libre 
 						this.monstre.moveTo(caseChoisie);
 						
 				      }									
@@ -65,7 +69,8 @@ public class DecisionMonstre implements Runnable, Serializable {
 	private synchronized Case choixRand(ArrayList<Case> ls){
 		
 		/*
-		 * Cherche les cases accessibles et se déplace sur une d'elle choisie aléatoirement.	
+		 * Cherche les cases accessibles et se déplace 
+		 * sur une d'elle choisie aléatoirement.	
 		 */
 		
 		Case caseChoisie = monstre.getCase();
@@ -80,25 +85,28 @@ public class DecisionMonstre implements Runnable, Serializable {
 		
 		/*
 		 * Cherche les cases accessibles et se déplace sur celle 
-		 * qui rapproche le plus du joueur.	
+		 * qui rapproche le plus du joueur (distance Manhattan).	
 		 */
 		
 		Case caseChoisie = monstre.getCase();
-		//System.out.println("Je suis sur: " + caseChoisie.getX() + " " + caseChoisie.getY() );
+		
 		Personnage player = this.game.getPopulation().getJoueur();
 		Case casePlayer = player.getCase();
-		//System.out.println(ls.size() + " possibilités" );		
+			
 		for(Case caseTemp:ls){
 	
 			if(casePlayer.getDist(caseTemp) < casePlayer.getDist(caseChoisie)){
 				caseChoisie = caseTemp;
 			}
 		}
-		//System.out.println("Je vais sur: " + caseChoisie.getX() + " " + caseChoisie.getY() );
-		this.agressif = false;
+		
+		this.agressif = false; //Le monstre n'est plus agressif
 		return caseChoisie;
 	}
 	
+	/*
+	 * Setters:
+	 */
 	
 	
 	public void devientAgressif(){

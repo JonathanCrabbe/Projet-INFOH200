@@ -6,7 +6,7 @@ import acteurs.Population;
 import main.Game;
 import plateau.Dalle;
 
-public class SlotButin extends Slot{
+public class SlotButin extends Slot{ //Ce sont les slots lootables
 
 	public SlotButin(int x, int y, Game game, Inventaire inventaire) {
 		super(x,y,game,inventaire);
@@ -16,7 +16,7 @@ public class SlotButin extends Slot{
 		setBounds(getXi(), getYi(), size, size);
 	}
 
-	public void leftClick() {
+	public void leftClick() { //Ajout du butin à l'inventaire du joueur
 		Inventaire inventaireJoueur = this.getGame().getPopulation().getJoueur().getInventaire();
 		inventaireJoueur.add(this.getItem());
 		this.setItem(null);
@@ -24,7 +24,7 @@ public class SlotButin extends Slot{
 	}
 
 	
-	public void rightClick() {
+	public void rightClick() { //Suppression de l'objet
 		setItem(null);
 		
 	}

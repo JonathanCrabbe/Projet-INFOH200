@@ -16,8 +16,8 @@ public class OkListener implements ActionListener {
 	
 	private Game game;
 	private OptionDialog dialog;
-	private ButtonGroup bg;
-	private JTextField tailleField; 
+	private ButtonGroup bg; //Groupe de bouton pour la sélection de classe
+	private JTextField tailleField; //Champ pour la taille du 
 	private JTextField nomField;
 
 	public OkListener(Game game, OptionDialog dialog, 
@@ -32,20 +32,20 @@ public class OkListener implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) throws TailleInvalideException {
 		
 		int taillePlateau = Integer.valueOf(tailleField.getText());
-		if(taillePlateau < 20) throw new TailleInvalideException();
-		game.setTaillePlateau(taillePlateau);
+		if(taillePlateau < 20) throw new TailleInvalideException(); //Le plateau doit au moins fair 20 cases de coté
+		game.setTaillePlateau(taillePlateau); 
 		
 		for(Enumeration<AbstractButton> buttons = 
-				bg.getElements(); buttons.hasMoreElements();){
+				bg.getElements(); buttons.hasMoreElements();){  //Enumère les boutons pour voir lequel est sélectionné
 			AbstractButton button = buttons.nextElement();
 			if (button.isSelected()) {
-                game.setClasseJoueur(button.getText());
+                game.setClasseJoueur(button.getText()); //Donne le nom de la classe sélectionnée au jeu
             }		
 		}
-		game.setNomJoueur(nomField.getText());
+		game.setNomJoueur(nomField.getText()); //Si une virgule a été inserée, il faut la suprimer (pour la persistance) 
 		
 		dialog.dispose();		
-		game.newGame();
+		game.newGame(); //Ouvre une nouvelle fenêtre
 		
 	}
 

@@ -16,14 +16,18 @@ public class AttaqueDistance implements Runnable, Subject  {
 	
 	private Game game;
 	private Personnage attaquant;
-	private ArrayList<Observer> observers = new ArrayList<Observer>();
-	private int x, y;
-	private int vx, vy;
-	private int dmg;
-	private Thread thread;
+	private ArrayList<Observer> observers = new ArrayList<Observer>(); 
+	private int x, y; //Position de l'attaque
+	private int vx, vy; //Vitesse instantanée de l'attaque
+	private int dmg;  //Dégats causé par l'attaque
+	private Thread thread;  //Thread associé
 	
-	private final int  range = 7;
-	private  int waitTime;
+	private final int  range = 7; //Portée de l'attaque
+	private  int waitTime; //Temps d'attente pour le thread
+	
+	/*
+	 * Constructeur et exécution:
+	 */
 
 	public AttaqueDistance(Game game, Personnage attaquant, int x,
 			int y, int vx, int vy, int vitesse) {
@@ -66,7 +70,7 @@ public class AttaqueDistance implements Runnable, Subject  {
 			
 		
 			
-			if(!this.game.getPopulation().caseIsFree(x,y)){
+			if(!this.game.getPopulation().caseIsFree(x,y)){ //Si un joueut est touché, l'attaque est détruite
 				Personnage persoTemp = this.game.getPopulation().getPerso(x, y);
 				persoTemp.getDammage(dmg);
 				try {
@@ -78,8 +82,8 @@ public class AttaqueDistance implements Runnable, Subject  {
 			}
 			
 			try {
-				thread.sleep(waitTime);
-			} catch (InterruptedException e) {
+				thread.sleep(waitTime);  //Pour rendre le déplacement de l'attaque non instantanné
+			} catch (InterruptedException e) { 
 				e.printStackTrace();
 			}
 			this.notifyObserver();
@@ -92,6 +96,10 @@ public class AttaqueDistance implements Runnable, Subject  {
 		}
 		
 	}
+	
+	/*
+	 * Design Pattern Observer (l'attaque est observée par des dalles pour son affichage)
+	 */
 	
 	public void attach(Observer o){
 		this.observers.add(o);

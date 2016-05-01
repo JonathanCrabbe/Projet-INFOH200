@@ -17,7 +17,7 @@ public class CancelListener implements ActionListener {
 
 
 	public void actionPerformed(ActionEvent e) {
-		dialog.dispose();
+		dialog.dispose(); //Ferme la fenêtre d'option
 	}
 
 }

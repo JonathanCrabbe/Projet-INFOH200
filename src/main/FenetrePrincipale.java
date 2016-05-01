@@ -32,16 +32,14 @@ public class FenetrePrincipale extends Canvas {
 		frame.setResizable(false);
 		
 		
-	
+		// Peindre le jeu sur la fenêtre:
+		
 		frame.add(game);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		game.start();
 	}
 	
-	public void close(){
-		frame.setVisible(false);
-		frame.dispose();
-	}
+	
 
 }

@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 public interface VisualGameObject{
 	
 	/*
-	 * Cette interface contient les caractéristiques d'un objet représentable
+	 * Cette interface contient les caractéristiques d'un objet représentable et actualisable
 	 */
 	
 	

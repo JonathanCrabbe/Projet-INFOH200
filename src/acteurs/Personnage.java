@@ -15,19 +15,17 @@ import plateau.Case;
 public abstract class Personnage implements VisualGameObject, Serializable {
 	
 	protected Game game;
-	protected int x;
-	protected int y;
-	private int vitesse;
-	protected int vx;
-	protected int vy;
-	protected boolean estJoueur;
-	private int HPMax;
-	protected int HP;
-	protected int force;
-	protected Inventaire inventaire;
+	private int x,y; //Position
+	private int vitesse; //Vitesse en norme
+	private int vx, vy; //Vitesses instantanées
+	private boolean estJoueur; //Indique si le personnage est joueur
+	private int HPMax; //Points de vie max. du personnage
+	private int HP; //Points de via instantannés du personnage
+	private int force; //Dégats infligés par une attaque
+	private Inventaire inventaire;
 	
 	/*
-	 * Implémentation:
+	 * Constructeur et actualisation:
 	 */
 	
 	public Personnage(int x, int y, Game game){
@@ -41,16 +39,9 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 		this.inventaire = construireInventaire();
 	}
 	
-	protected abstract Inventaire construireInventaire();
 	
-	/* 
-	 * Actualisation:
-	 */
-	
+	protected abstract Inventaire construireInventaire(); //A redéfinir dans les classes filles
 	public abstract void tick();
-	
-	
-	
 	public abstract void render(Graphics g);
 		
 	
@@ -59,16 +50,20 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 	 */
 	
 	public void setX(int x){
-		this.x = x;
+		if(x > 0 && x < game.getTaillePlateau()) this.x = x;
 	}
 	public void setY(int y){
-		this.y = y;
+		if(y > 0 && y < game.getTaillePlateau()) this.y = y;
 	}
 	
-	/*
-	 * Setters:
-	 */
-	
+	public void setVx(int vx) {
+		this.vx = vx;
+	}
+
+	public void setVy(int vy) {
+		this.vy = vy;
+	}
+
 	public void setHP(int HP){
 		if(HP <= HPMax){
 			this.HP = HP;
@@ -83,11 +78,13 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 		if(force > 0) this.force = force;
 	}
 	
-	//Fait subir au personnage un dégat d
-	public synchronized void getDammage(int d){
-		this.HP -= d;
+	public void setEstJoueur(boolean ans){
+		this.estJoueur = ans;
 	}
 	
+	public void setInventaire(Inventaire inventaire){
+		this.inventaire = inventaire;
+	}
 	
 	/*
 	 * Getters:
@@ -99,6 +96,14 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 	public int getY(){
 		return y;
 	}
+	public int getVx() {
+		return vx;
+	}
+
+	public int getVy() {
+		return vy;
+	}
+
 	public boolean getEstJoueur(){
 		return estJoueur;
 	}
@@ -107,28 +112,31 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 		return HPMax;
 	}
 	
-	//Renvoie la case sur laquelle se trouve le personnage:
-	public Case getCase(){
+	
+	public Case getCase(){ //Renvoie la case sur laquelle se trouve le personnage:
 		
 		return this.game.getPlateau().getCase(x, y);
 	}
 	
-	//Renvoie les cases accessibles au personnage
-	public ArrayList<Case> getReachableCases(){
-		ArrayList<Case> ls = new ArrayList<Case>();
-		
+	
+	public ArrayList<Case> getReachableCases(){ //Renvoie les cases accessibles au personnage
+		ArrayList<Case> ls = new ArrayList<Case>();	
 		int taille = this.game.getPlateau().getTaille();
+		
+		//Bornes du champ de vision:
 		
 		int imin = Math.max(0, x-vitesse);
 		int imax = Math.min(taille-1, x+vitesse);
 		int jmin = Math.max(0, y-vitesse);
 		int jmax = Math.min(taille-1, y+vitesse);
 		
+		//For séparés car pas de déplacement diagonaux:
+		
 		for(int i = imin ; i <= imax ; i++ ){
 			//Cases accessibles à gauche et à droite
 			Case caseTemp = this.game.getPlateau().getCase(i, y);
-			if(caseTemp.getCaseType() == 0){
-				ls.add(caseTemp);  //On vérifie que la case est une Dalle
+			if(caseTemp.getCaseType() == 0){ //On vérifie que la case est une Dalle
+				ls.add(caseTemp);  
 			}
 			
 		}
@@ -136,26 +144,24 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 		for(int j = jmin ; j<= jmax ; j++){
 			//Cases accessibles en haut et en bas
 			Case caseTemp = this.game.getPlateau().getCase(x, j);
-			if(caseTemp.getCaseType() == 0){
-				ls.add(caseTemp); //On vérifie que la case est une Dalle
+			if(caseTemp.getCaseType() == 0){ //On vérifie que la case est une Dalle
+				ls.add(caseTemp); 
 			}
 		}
 		return ls;
 	}
 	
 	
-	 //Renvoie les cases libres accessibles au personnage
-	public ArrayList<Case> getFreeReachableCases(){
+	 
+	public ArrayList<Case> getFreeReachableCases(){ //Renvoie les cases libres accessibles au personnage
 			
 			ArrayList<Case> ls = getReachableCases();		
 			
-			for(int i = 0; i < ls.size(); i++){
-				//On retire toutes les cases non libres:
-				Case caseTemp = ls.get(i);
+			for(Case caseTemp:ls){
 				int xTemp = caseTemp.getX();
 				int yTemp = caseTemp.getY();
 				if(! this.game.getPopulation().caseIsFree(xTemp, yTemp)){
-					ls.remove(caseTemp);
+					ls.remove(caseTemp); //On retire toutes les cases non libres
 				}
 			}
 			return ls;
@@ -163,12 +169,10 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 		
 	
 		
-	//Renvoie les points de vie du personnage
 	public int getHP(){
 			return HP;
 	}
 	
-	//Renvoie la force
 	public int getForce(){
 		return this.force;
 	}
@@ -182,31 +186,31 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 	 */
 	
 	public void moveUp(){
-		this.vy = -vitesse;
-		this.vx = 0;
+		this.setVy(-vitesse);
+		this.setVx(0);
 	}
 	
 	public void moveDown(){
-		this.vy = vitesse;
-		this.vx = 0;
+		this.setVy(vitesse);
+		this.setVx(0);
 	}
 	
 	public void moveRight(){
-		this.vx = vitesse;
-		this.vy = 0;
+		this.setVx(vitesse);
+		this.setVy(0);
 	}
 	
 	public void moveLeft(){
-		this.vx = -vitesse;
-		this.vy = 0;
+		this.setVx(-vitesse);
+		this.setVy(0);
 	}
 	
 	public void immobilize(){
-		this.vx = 0;
-		this.vy = 0;
+		this.setVx(0);
+		this.setVy(0);
 	}
 	
-	public void moveTo(Case cs){
+	public synchronized void moveTo(Case cs){
 		this.x = cs.getX();
 		this.y = cs.getY();
 	}
@@ -217,29 +221,25 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 	 */
 	
 	
-	//Attaque l'ennemi ayant les corrdonnées (x,y)
-	public synchronized void attaqueCoord(int x, int y, int dmg){
-		if(!this.game.getPopulation().caseIsFree(x, y)){
-			Personnage target = this.game.getPopulation().getPerso(x, y);
-			target.getDammage(dmg);
+	public synchronized void attaqueCoord(int x, int y, int dmg){ //Fait subir à l'ennemi ayant les corrdonnées (x,y) le dégat dmg
+		if(!this.game.getPopulation().caseIsFree(x, y)){ //Si la case est occupée:
+			Personnage target = this.game.getPopulation().getPerso(x, y); 
+			target.getDammage(dmg); //On fait subir à la cible les dégats
 		}	
 	}
 	
-	//Attaque la case au dessus du personnage
-	public void attaqueUp(){
+	public void attaqueUp(){ //Attaque la case au dessus du personnage
 		int xTarget = x;
 		int yTarget = y-1;
-		if(! this.game.getPopulation().caseIsFree(xTarget, yTarget)){
+		if(! this.game.getPopulation().caseIsFree(xTarget, yTarget)){ //Si la caase visée est occupée:
 			Personnage target = this.game.getPopulation().getPerso(xTarget, yTarget);
-			AttaqueSimple attaque = new AttaqueSimple(this, target);
+			AttaqueSimple attaque = new AttaqueSimple(this, target);  //On y créer un thread qui gère l'attaque
 			attaque.run();
-			}
-		
-		//attaqueCoord(xTarget, yTarget, force);		
+			}	
 	}
 	
-	//Attaque la case en dessous du personnage
-	public void attaqueDown(){
+	
+	public void attaqueDown(){ //Attaque la case en dessous du personnage
 		int xTarget = x;
 		int yTarget = y+1;
 		if(! this.game.getPopulation().caseIsFree(xTarget, yTarget)){
@@ -247,13 +247,10 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 			AttaqueSimple attaque = new AttaqueSimple(this, target);
 			attaque.run();
 			}
-		
-		//attaqueCoord(xTarget, yTarget, force);	
-		
 	}
 	
-	//Attaque la case à droite du personnage
-	public void attaqueRight(){
+	
+	public void attaqueRight(){ //Attaque la case à droite du personnage
 		int xTarget = x+1;
 		int yTarget = y;
 		if(! this.game.getPopulation().caseIsFree(xTarget, yTarget)){
@@ -261,25 +258,25 @@ public abstract class Personnage implements VisualGameObject, Serializable {
 			AttaqueSimple attaque = new AttaqueSimple(this, target);
 			attaque.run();
 			}
-		
-		//attaqueCoord(xTarget, yTarget, force);	
-		
 	}
 	
-	//Attaque la case à gauche du personnage
-	public void attaqueLeft(){
+	
+	public void attaqueLeft(){ //Attaque la case à gauche du personnage
 		int xTarget = x-1;
 		int yTarget = y;
 		if(! this.game.getPopulation().caseIsFree(xTarget, yTarget)){
 			Personnage target = this.game.getPopulation().getPerso(xTarget, yTarget);
 			AttaqueSimple attaque = new AttaqueSimple(this, target);
 			attaque.run();
-			}
-		
-		//attaqueCoord(xTarget, yTarget, force);	
-		
+			}	
 	}
 	
+	
+	public synchronized void getDammage(int d){ //Fait subir au personnage un dégat d
+		this.HP -= d;
+	}
+
+
 	/*
 	 *  Inventaire
 	 */

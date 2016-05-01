@@ -20,6 +20,10 @@ public class Plateau extends JPanel implements  Serializable{
 	private ArrayList<Case> grille = new ArrayList<Case>();
 	private Game game;
 	
+	/*
+	 * Construction et représentation:
+	 */
+	
 	public Plateau(int taille, Game game){
 		this.taille = taille;
 		this.setFocusable(true);
@@ -38,22 +42,13 @@ public class Plateau extends JPanel implements  Serializable{
 		}		
 	}
 	
-	/*
-	 * Actualisation:
-	 */
-	
-	
-	
-	
-	
-	
-	//Cherche chacune des cases visibles par le joueur et la dessine
-	public void renderLocal(Graphics g, int x, int y) { 
+
+	public void renderLocal(Graphics g, int x, int y) { //Cherche chacune des cases visibles par le joueur et les dessine
 		if(grille == null){
 		}else{
 			int FOV = Joueur.FOV; //Champ de vision du joueur
 			
-			//Bornes des boucles (ne pas sortir de l'indexation des listes:
+			//Bornes des boucles (ne pas sortir de l'indexation des listes ==> min, max):
 			int xinf = Math.max(x-FOV, 0);
 			int xsup = Math.min(x+FOV+1, taille);
 			int yinf = Math.max(y-FOV, 0);
@@ -76,8 +71,7 @@ public class Plateau extends JPanel implements  Serializable{
 	 *  Implémentation:
 	 */
 	
-	//Ajoute une case à la ArrayList
-	private void addCase(Case c, int x, int y){
+	private void addCase(Case c, int x, int y){ //Ajoute une case à la ArrayList
 		this.grille.add(y, c);
 	}
 	
@@ -87,8 +81,8 @@ public class Plateau extends JPanel implements  Serializable{
 	 */
 	
 	
-	//Donne une liste des Dalles
-	public ArrayList<Case> getDalles(){		
+	
+	public ArrayList<Case> getDalles(){	//Donne une liste des Dalles	
 		ArrayList<Case> ls = new ArrayList<Case>();
 		
 		for(Case caseTemp:grille){		
@@ -99,8 +93,8 @@ public class Plateau extends JPanel implements  Serializable{
 		
 		return ls;
 	}
-	//Renvoie une liste des Dalles non occupées par des personnages
-	public ArrayList<Case> getFreeDalles(){
+	
+	public ArrayList<Case> getFreeDalles(){ //Renvoie une liste des Dalles non occupées par des personnages
 		ArrayList<Case> ls = getDalles();
 		
 		for(Case caseTemp:ls){
@@ -116,10 +110,10 @@ public class Plateau extends JPanel implements  Serializable{
 	}
 	
 	
-	public Case getCase(int x, int y){
+	public Case getCase(int x, int y){ //Renvoie la case en (x,y)
 		Case res = null;
-		for(Case caseTemp:grille){
-			if(caseTemp.getX() == x && caseTemp.getY() == y){
+		for(Case caseTemp:grille){ //Parcourir les cases pour trouver la bonne
+			if(caseTemp.getX() == x && caseTemp.getY() == y){ 
 				res = caseTemp;
 				break;
 			}
@@ -128,20 +122,13 @@ public class Plateau extends JPanel implements  Serializable{
 	}
 	
 	
-	public boolean estDalle(int x, int y){
-		return (this.getCase(x, y).getCaseType() == 0);
+	public boolean estDalle(int x, int y){ 
+		return (this.getCase(x, y).getCaseType() == 0); //True si (x,y) contient une dalle
 	}
 	
-	public int getTaille(){
+	public int getTaille(){ 
 		return this.taille;
 	}
-
-	
-
-	
-	
-	
-	
 
 }
 	

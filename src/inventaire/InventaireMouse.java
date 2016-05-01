@@ -41,7 +41,7 @@ public class InventaireMouse implements MouseListener {
 			 */
 			if(slotTemp.contains(mousePoint) && inventaire.getIsVisible()){
 				if(isLeftClicked){
-					slotTemp.leftClick();
+					slotTemp.leftClick(); 
 				}
 				else if(isRightClicked){
 					slotTemp.rightClick();

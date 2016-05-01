@@ -11,10 +11,10 @@ import main.Game;
 import main.VisualGameObject;
 import plateau.Dalle;
 
-public abstract class Slot extends Rectangle implements VisualGameObject, Serializable { 
+public abstract class Slot extends Rectangle implements  Serializable { 
 	/*
 	 *  Cette classe gère les slots d'inventaire et contiennent un objet.
-	 *  Hérite de Rectangle pour l'interraction souris.
+	 *  Hérite de Rectangle pour l'interraction avec la souris.
 	 */
 	private  Game game;
 	private Inventaire inventaire;
@@ -22,10 +22,11 @@ public abstract class Slot extends Rectangle implements VisualGameObject, Serial
 	private int x,y; //Position sur la grille 
 	private int  size = Dalle.dim;
 	private int xi, yi; //Position sur le Canvas Game
-
-
-	
 	private boolean isClicked;
+	
+	/*
+	 * Constructeur et actualisation:
+	 */
 	
 	public Slot(int x, int y, Game game, Inventaire inventaire){
 		this.x = x;
@@ -36,15 +37,6 @@ public abstract class Slot extends Rectangle implements VisualGameObject, Serial
 		
 	}
 	
-	public abstract void leftClick();
-	
-	public abstract void rightClick();
-	
-	public void tick(){
-		
-		
-	}
-
 	public void render(Graphics g) {
 		if(item != null){
 			
@@ -53,6 +45,17 @@ public abstract class Slot extends Rectangle implements VisualGameObject, Serial
 		g.setColor(Color.BLUE);
 		g.drawRect(xi, yi, size, size);	
 	}
+	
+	/*
+	 * Gestion des clics:
+	 */
+
+	public abstract void leftClick();
+	
+	public abstract void rightClick();
+	
+
+	
 	
 	/*
 	 * Getters:

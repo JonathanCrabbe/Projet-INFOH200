@@ -34,12 +34,18 @@ public class TopBar extends Canvas implements VisualGameObject, Serializable {
 		g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT/20);
 		Font font = new Font("Courier", Font.BOLD, 15); //Police
 		g.setFont(font);
+		
+		//HP du joueur:
 		g.setColor(Color.red);
-		g.drawString("HP: " + String.valueOf(playerHP) + " / " + String.valueOf(playerHPMax) , 15, 20);
+		g.drawString("HP: " + String.valueOf(playerHP) + " / " + String.valueOf(playerHPMax) , 15, 20); 
+		
+		//Compteur de monstres:
 		g.setColor(Color.blue);
-		g.drawString("Monstres: " + String.valueOf(mobsAlive) , 5*Game.WIDTH / 10, 20);
+		g.drawString("Monstres: " + String.valueOf(mobsAlive) , 5*Game.WIDTH / 10, 20);  
+		
+		//Score:
 		g.setColor(Color.green);
-		g.drawString("Score: " + String.valueOf(game.getScore()) , 8*Game.WIDTH / 10, 20);
+		g.drawString("Score: " + String.valueOf(game.getScore()) , 8*Game.WIDTH / 10, 20);  
 	}
 
 	

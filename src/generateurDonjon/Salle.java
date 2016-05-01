@@ -1,24 +1,11 @@
 package generateurDonjon;
 
 public class Salle {
+
+	private int x1, y1, x2, y2;  //Extremités de la salle
+	private int w, h; //Dimensions de la salle
+	private int xc, yc; //Centre de la pièce (utile pour les couloirs):
 	
-	//Extremités de la salle (rectangulaire) 1 = supérieur gauche et 2 = inférieur droit:
-	
-	protected int x1;  
-	protected int y1;
-	protected int x2;
-	protected int y2;
-	
-	//Dimensions de la salle:
-	
-	protected int w; 
-	protected int h;
-	
-	//Centre de la pièce (utile pour les couloirs):
-	
-	protected int xc, yc;
-	
-	//Constructeur
 	public Salle(int x, int y, int w, int h) {        
         this.x1 = x;
         this.x2 = x + w;
@@ -30,12 +17,36 @@ public class Salle {
         this.yc = Math.round((y1 + y2) / 2);
     }
 	
-	//Renvoie True si cette Salle en rencontre une autre
-	public boolean intersects(Salle autreSalle){
+	
+	public boolean intersects(Salle autreSalle){ //Renvoie True si cette Salle en rencontre une autre
         
 		return (x1 <= autreSalle.x2 && x2 >= autreSalle.x1 &&
             y1 <= autreSalle.y2 && y2 >= autreSalle.y1);
     }
+	
+	public int getX1(){
+		return this.x1;
+	}
+	
+	public int getX2(){
+		return this.x2;
+	}
+	
+	public int getY1(){
+		return this.y1;
+	}
+	
+	public int getY2(){
+		return this.y2;
+	}
+	
+	public int getXC(){
+		return this.xc;
+	}
+	
+	public int getYC(){
+		return this.yc;
+	}
 }
 
 

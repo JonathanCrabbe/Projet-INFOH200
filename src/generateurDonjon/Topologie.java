@@ -15,27 +15,21 @@ public class Topologie {
 		this.tailleDonjon = tailleDonjon;
 		this.nombreSalles = Math.round(tailleDonjon/5);
 		int tailleSalleMax = Math.round(tailleDonjon/5);
-	    
-		//Chaque Salle a des attributs choisis aléatoirement, utilisation de la classe Random de Java
-		
-		Random rd = new Random(); //Car la méthode souhaitée n'est pas statique
+	 	
+		Random rd = new Random(); //Chaque Salle a des attributs choisis aléatoirement
 		
 		
-	    for (int i = 0; i < nombreSalles; i++) { 
-	    	//On execute cette boucle jusqu'à avoir le nombre de salles souhaité
+	    for (int i = 0; i < nombreSalles; i++) { //On execute cette boucle jusqu'à avoir le nombre de salles souhaité
 	        int w = tailleSalleMin + rd.nextInt(tailleSalleMax - tailleSalleMin +1);  
 	        int h = tailleSalleMin + rd.nextInt(tailleSalleMax - tailleSalleMin +1);
 	        int x = 1 + rd.nextInt(tailleDonjon - w +1);
 	        int y = 1 + rd.nextInt(tailleDonjon - h +1);
 	        
-	        Salle newSalle = new Salle(x, y, w, h); //On créer une salle avec ces attributs aléatoires
-	 
+	        Salle newSalle = new Salle(x, y, w, h); //On crée une salle avec ces attributs aléatoires
 	        boolean failed = false; //Booléen qui vaut false si la salle convient
 	        
 	        for (Salle autreSalle:salles) {
-	            
-	        	//Si la nouvelle salle en rencontre une autre, c'est raté! On recommence!
-	        	if (newSalle.intersects(autreSalle)) {
+	        	if (newSalle.intersects(autreSalle)) { //Si la nouvelle salle en rencontre une autre, c'est raté! On recommence!
 	                failed = true;
 	                break;
 	            }
@@ -56,16 +50,15 @@ public class Topologie {
 	        if(salles.size() != 1){
 	        	
 	        	// On récupère le centre de la nouvelle salle
-		        int xc2 = newSalle.xc;
-		        int yc2 = newSalle.yc;
+		        int xc2 = newSalle.getXC();
+		        int yc2 = newSalle.getYC();
 		        
 		        //On récupère le centre de la salle d'avant:
 		        
-		        int j = 0;
-		        //Si on a déjà créé 2 couloirs:		        
-		        if(salles.size() >= 4) j = salles.size() - 4;
-		        int xc1 = salles.get(j).xc;
-		        int yc1 = salles.get(j).yc;
+		        int j = 0;	        	        
+		        if(salles.size() >= 4) j = salles.size() - 4; //Si on a déjà créé 2 couloirs
+		        int xc1 = salles.get(j).getXC();
+		        int yc1 = salles.get(j).getYC();
 		        
 		        //On crée les attributs d'un couloir horizontal qui connecte xc1 à xc2:
 		        int xh = 0;
@@ -84,14 +77,12 @@ public class Topologie {
 		        Salle couloirHorizontal = new Salle(xh, yh, wh, 1);
 		        salles.add(couloirHorizontal);
 		        
-		      //On crée les attributs d'un couloir vertical qui connecte yc1 à yc2:
-		        
-		      
+		        //On crée les attributs d'un couloir vertical qui connecte yc1 à yc2:      
 	            int xv = xh+wh-1;
 	            int yv = Math.min(yc1, yc2) ;	           
 		        int hv = Math.abs(yc1 - yc2);
 		        
-		        //On crée une salle couloir horizontal et on l'ajoute à la liste:
+		        //On crée une salle couloir vertical et on l'ajoute à la liste:
 		        Salle couloirVertical = new Salle(xv, yv, 1, hv);
 		        salles.add(couloirVertical);
 	        }
@@ -106,15 +97,18 @@ public class Topologie {
 	
 	public boolean estSalle(int x, int y){
 		
-		//Cette fonction renvoie True si le point (x,y) est dans une des salles
+		/*
+		 * Cette fonction renvoie True si le point (x,y) est dans une des salles.
+		 * Elle est utile pour construire un objet Plateau.
+		 */
 		
 		boolean ans = false;
 		
 		for(Salle salleTemp:salles){
-			int x1 = salleTemp.x1;
-			int x2 = salleTemp.x2;
-			int y1 = salleTemp.y1;
-			int y2 = salleTemp.y2;
+			int x1 = salleTemp.getX1();
+			int x2 = salleTemp.getX2();
+			int y1 = salleTemp.getY1();
+			int y2 = salleTemp.getY2();
 			
 			if(x1 <= x && x <= x2 && y1 <= y && y <= y2 ) ans = true;
 			

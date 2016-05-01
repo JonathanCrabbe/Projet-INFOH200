@@ -10,17 +10,14 @@ import javax.imageio.ImageIO;
 import GUI.ImageContainer;
 import main.VisualGameObject;
 
-public class Dalle extends Case{
+public class Dalle extends Case{ //Case sur laquelle l'on peut se déplacer
 
 	public Dalle(int x, int y) {
 		super(x, y, 0);
 		
 	}
 
-
-
-	
-	public void render(Graphics g, int xi, int yi) {
+	public void render(Graphics g, int xi, int yi) { //Fait un rendu de la case en (xi,yi)
 		
 		g.drawImage(ImageContainer.imageDalle, xi*dim, yi*dim, dim, dim, null);
 		if(this.getButin() != null){

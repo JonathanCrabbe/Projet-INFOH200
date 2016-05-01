@@ -9,19 +9,27 @@ import plateau.Case;
 
 public abstract class PNJ extends Personnage implements VisualGameObject {
 	
+	/*
+	 * Constructeur
+	 */
 
 	
 	public PNJ(int x, int y, Game game) {
 		super(x, y, game);
-		this.estJoueur = false;
+		this.setEstJoueur(false);
 		
 		
 	}
 	
+	/*
+	 * Getters
+	 */
 	
 	
-	//Renvoie True si le PNJ apparaît dans le champ de vision du joueur
-	public boolean isInFOV(){
+	public boolean isInFOV(){ //Renvoie True si le PNJ est visible par le joueur
+		int x = this.getX();
+		int y = this.getY();
+		
 		Personnage joueur = this.game.getPopulation().getPerso(0);
 		//Coordonnées du joueur:
 		int xp = joueur.getX();
